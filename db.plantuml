@@ -1,0 +1,82 @@
+@startuml DB
+
+entity User
+{
+  {field} id : uuid
+  {field} email : string 255 unique
+  {field} password : string 255
+  {field} pseudo : string 255
+  {field} avatar : ?Picture
+  {field} roles : string[]
+  {field} createdAt : DateTimeImmutable
+  {field} tokenForgottenPassword : ?string 255
+  {field} tokenForgottenPasswordExpiredAt : ?DateTimeImmutable
+  {field} isActive : boolean
+  {field} games : Game[]
+  {field} comments : Comment[]
+  {field} platform : ?Platform
+}
+
+entity Game
+{
+  {field} id : uuid
+  {field} author : User
+  {field} name : string 255
+  {field} description : text
+  {field} ratings : Rating[]
+  {field} pictures : Picture[]
+  {field} comments : Comment[]
+  {field} platforms : Platform[]
+  {field} createdAt : DateTimeImmutable
+  {field} updatedAt : DateTimeImmutable
+}
+
+entity Picture
+{
+  {field} id : uuid
+  {field} game : ?Game
+  {field} user : ?User
+  {field} path : string
+  {field} createdAt: DateTimeImmutable
+}
+
+entity Comment
+{
+  {field} id : uuid
+  {field} user : User
+  {field} game : Game
+  {field} content : text
+  {field} createdAt : DateTimeImmutable
+  {field} updatedAt : DateTimeImmutable
+}
+
+entity Rating
+{
+  {field} id : uuid
+  {field} user : User
+  {field} game : Game
+  {field} score : int
+}
+
+entity Platform
+{
+  {field} id : uuid
+  {field} name : string unique
+  {field} games : Game[]
+  {field} users : User[]
+}
+
+User "1" -- "0..n" Game
+User "1" -- "0..n" Comment
+User "1" -- "1" Picture
+
+Game "1" -- "0..n" Picture
+Game "1" -- "0..n" Comment
+Game "1" -- "0..n" Rating
+Game "0..n" -- "0..n" Platform
+
+Rating "0..n" -- "1" User
+
+Platform "1" -- "0..n" User
+
+@enduml
