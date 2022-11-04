@@ -7,19 +7,19 @@
 {% endblock %}
 
 {% block body %}
-  <form class="form-login" method="post">
+  <form class="form-auth" method="post">
     <h1 class="mb-20">CONNEXION</h1>
-    <div class="d-flex flex-column p-20 gx-5 card">
+    <div class="card">
       {% if error %}
         <div>
           <small class="form-error">{{ error.messageKey|trans(error.messageData, 'security') }}</small>
         </div>
       {% endif %}
-      <div class="d-flex flex-column card-item">
+      <div class="card-item">
         <label class="pb-5" for="inputEmail">Email</label>
         <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
       </div>
-      <div class="d-flex flex-column card-item">
+      <div class="card-item">
         <label class="pb-5" for="inputPassword">Password</label>
         <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
       </div>
