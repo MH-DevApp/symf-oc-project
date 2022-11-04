@@ -362,6 +362,30 @@
     margin-right: 30px;
 }
 
+.g-5 {
+    gap: 5px;
+}
+
+.g-10 {
+    gap: 10px;
+}
+
+.gx-5 {
+    row-gap: 5px;
+}
+
+.gx-10 {
+    row-gap: 10px;
+}
+
+.gy-5 {
+    column-gap: 5px;
+}
+
+.gy-10 {
+    column-gap: 10px;
+}
+
 .container {
     max-width: 1200px;
     margin: auto;
