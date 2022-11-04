@@ -1,0 +1,29 @@
+footer, header {
+    background-color: var(--primary);
+    color: var(--ligth);
+}
+
+header {
+    height: 80px;
+}
+
+header nav {
+    height: 100%;
+}
+
+header nav .brand {
+    font-size: 2rem;
+    font-weight: bold;
+    padding-right: 20px;
+    border-right: 3px solid var(--ligth);
+}
+
+header nav .brand a {
+    color: var(--ligth);
+    text-decoration: none;
+    transition: opacity 0.2s linear;
+}
+
+header nav .brand a:hover {
+    opacity: 0.8;
+}
