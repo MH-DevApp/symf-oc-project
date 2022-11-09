@@ -23,6 +23,7 @@ entity Game
   {field} author : User
   {field} name : string 255
   {field} description : text
+  {field} isPublished : boolean
   {field} ratings : Rating[]
   {field} pictures : Picture[]
   {field} comments : Comment[]
@@ -62,6 +63,7 @@ entity Platform
 {
   {field} id : uuid
   {field} name : string unique
+  {field} path : string
   {field} games : Game[]
   {field} users : User[]
 }

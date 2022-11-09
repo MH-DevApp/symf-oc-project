@@ -1,0 +1,62 @@
+.game {
+  width: 100%;
+}
+
+.game .game-header {
+  box-shadow: 0 0 3px 1px #1c1c70;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  padding: 20px;
+  width: 80%;
+  max-width: 1200px;
+  gap: 10px;
+  background-color: var(--primary-light);
+}
+
+.game .game-header .game-header-pictures img {
+  height: 250px;
+  width: calc((75px * 4) + (4 * 5px));
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.game .game-header .game-header-pictures-min img {
+  height: 75px;
+  width: 75px;
+  object-fit: cover;
+  border-radius: 5px;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+.game .game-header .game-header-pictures-min img.active {
+  border: 2px solid var(--primary-1);
+  cursor: default;
+}
+
+.game .game-header-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.game .game-header-title img.platform-logo {
+  height: 40px;
+  width: 40px;
+  border-radius: 10px;
+}
+
+.game .game-body {
+  max-width: 1200px;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+  box-shadow: 0 0 3px 1px #1c1c70;
+  border-radius: 5px;
+  background-color: var(--primary-light);
+}

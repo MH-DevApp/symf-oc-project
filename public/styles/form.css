@@ -1,4 +1,4 @@
-.form-auth {
+.form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -28,4 +28,28 @@
 
 .card .card-item label {
     font-weight: 600;
+}
+
+.card .card-item textarea {
+    height: 300px;
+    resize: none;
+}
+
+.card .card-item input[type=file] {
+    align-self: center;
+    border: none;
+}
+
+.card .card-item .card-option {
+    display: flex;
+    align-items: center;
+}
+
+.card .card-item .card-option label {
+    font-weight: normal;
+    margin-right: 2px;
+}
+
+.card .card-item .card-option label:first-letter {
+    text-transform: capitalize;
 }
