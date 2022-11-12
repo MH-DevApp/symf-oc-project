@@ -13,15 +13,27 @@ class UserFixtures extends Fixture
 
   public function load(ObjectManager $manager): void
   {
-    $user = (new User())
-      ->setCreatedAt(new \DateTimeImmutable('now'))
-      ->setEmail('test@test.com')
-      ->setPseudo('Test');
 
-    $hash = $this->hasher->hashPassword($user, '123123');
-    $user->setPassword($hash);
+    for($i=0;$i<10;$i++) {
 
-    $manager->persist($user);
+      if ($i === 0) {
+        $user = (new User())
+          ->setCreatedAt(new \DateTimeImmutable('now'))
+          ->setEmail('admin@test.com')
+          ->setRoles(['ROLE_ADMIN'])
+          ->setPseudo('Admin');
+      } else {
+        $user = (new User())
+          ->setCreatedAt(new \DateTimeImmutable('now'))
+          ->setEmail('user'.$i.'@test.com')
+          ->setPseudo('User'.$i);
+      }
+
+      $hash = $this->hasher->hashPassword($user, '123123');
+      $user->setPassword($hash);
+
+      $manager->persist($user);
+    }
     $manager->flush();
   }
 }

@@ -3,8 +3,13 @@
 namespace App\Repository;
 
 use App\Entity\Comment;
+use App\Entity\Game;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @extends ServiceEntityRepository<Comment>
@@ -37,6 +42,22 @@ class CommentRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+  /**
+   * @throws NonUniqueResultException
+   */
+  public function getCommentByUserAndByGame(User|UserInterface $user, Game $game): Comment|null
+    {
+      return $this->createQueryBuilder('c')
+        ->where('c.user = :user')
+        ->andWhere('c.game = :game')
+        ->setParameters([
+          'user' => $user->getId()->toBinary(),
+          'game' => $game->getId()->toBinary()
+        ])
+        ->getQuery()
+        ->getOneOrNullResult();
     }
 
 //    /**

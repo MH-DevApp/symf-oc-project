@@ -2,13 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Game;
 use App\Entity\Picture;
 use App\Entity\Platform;
+use App\Form\CommentType;
 use App\Form\GameType;
 use App\Form\PictureType;
+use App\Repository\CommentRepository;
 use App\Repository\PlatformRepository;
-use Doctrine\Common\Collections\Collection;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -25,12 +28,13 @@ class GameController extends AbstractController
   /**
    * @throws Exception
    */
-  #[Route('/view/{name}', name: 'app_game_view')]
+  #[Route('/view/{name}/{tab}', name: 'app_game_view', defaults: ['tab' => 'about'])]
   #[ParamConverter('game', options: ['mapping' => ['name' => 'name']])]
   public function view(
     ?Game $game,
+    string $tab,
     Request $request,
-    PlatformRepository $repo,
+    CommentRepository $commentRepository,
     EntityManagerInterface $em,
   ): Response
   {
@@ -38,30 +42,91 @@ class GameController extends AbstractController
       return $this->redirectToRoute('app_home');
     }
 
-    $picture = new Picture();
+    $ratingScore = null;
 
-    $form = $this->createForm(PictureType::class, $picture);
-    $form->handleRequest($request);
-
-    if ($form->isSubmitted() && $form->isValid()) {
-      $folder = $this->getParameter('game.folder');
-      $ext = $picture->getFile()->guessExtension() ?? 'bin';
-      $filename = bin2hex(random_bytes(10)) . '.' . $ext;
-      $picture->getFile()->move($folder, $filename);
-      $picture->setPath($this->getParameter('game.folder.public_path').'/'.$filename);
-      $picture->setCreatedAt(new \DateTimeImmutable('now'));
-      dump($picture);
-
-      // UPDATE GAME AND FLUSH
-
-      return $this->redirectToRoute('app_game_view', [
-        'name' => $game->getName()
-      ]);
+    if ($game->getComments()->count() > 0) {
+      foreach ($game->getComments() as $comment) {
+        $ratingScore += $comment->getScore();
+      }
+      $ratingScore /= $game->getComments()->count();
     }
 
-    return $this->render('game/view.html.twig', [
+    $options = [
       'game' => $game,
-      'form' => $form->createView()
+      'tab' => $tab,
+      'ratingScore' => $ratingScore
+    ];
+
+    if ($this->getUser()) {
+      // FORM PICTURE
+      $picture = new Picture();
+      $formPicture = $this->createForm(PictureType::class, $picture);
+      $formPicture->handleRequest($request);
+
+      if ($formPicture->isSubmitted() && $formPicture->isValid()) {
+        $folder = $this->getParameter('game.folder');
+        $ext = $picture->getFile()->guessExtension() ?? 'bin';
+        $filename = bin2hex(random_bytes(10)) . '.' . $ext;
+        $picture->getFile()->move($folder, $filename);
+        $picture->setPath($this->getParameter('game.folder.public_path').'/'.$filename);
+        $picture->setCreatedAt(new DateTimeImmutable('now'));
+
+        // UPDATE GAME AND FLUSH
+        $game->addPicture($picture);
+        $em->persist($game);
+        $em->flush();
+
+        return $this->redirectToRoute('app_game_view', [
+          'name' => $game->getName(),
+          'tab' => $tab
+        ]);
+      }
+
+      // FORM RATING
+      $comment = $commentRepository->getCommentByUserAndByGame(
+        $this->getUser(),
+        $game
+      ) ?? null;
+
+      if (!$comment) {
+        $comment = new Comment();
+      }
+
+      $formRating = $this->createForm(CommentType::class, $comment);
+      $formRating->handleRequest($request);
+
+      if ($formRating->isSubmitted() && $formRating->isValid()) {
+
+        if (!$comment->getId()) {
+          $comment
+            ->setUser($this->getUser())
+            ->setCreatedAt(new DateTimeImmutable('now'))
+          ;
+          $game->addComment($comment);
+          $em->persist($game);
+        } else {
+          $comment->setUpdatedAt(new DateTimeImmutable('now'));
+          $em->persist($comment);
+        }
+        $em->flush();
+
+        return $this->redirectToRoute('app_game_view', [
+          'name' => $game->getName(),
+          'tab' => $tab
+        ]);
+      }
+
+      $options = [
+        ...$options,
+        'formPicture' => $formPicture->createView(),
+        'formComment' => $formRating->createView(),
+        'ratingUserValue' => $comment->getId() ? $comment->getScore() : null
+      ];
+    }
+
+
+    return $this->render('game/view.html.twig', [
+      ...$options
     ]);
   }
 
@@ -91,7 +156,7 @@ class GameController extends AbstractController
         }
 
         $game
-          ->setCreatedAt(new \DateTimeImmutable('now'))
+          ->setCreatedAt(new DateTimeImmutable('now'))
           ->setAuthor($this->getUser());
 
         $em->persist($game);

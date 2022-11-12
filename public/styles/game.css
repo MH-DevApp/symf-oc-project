@@ -7,20 +7,70 @@
   border-radius: 5px;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   padding: 20px;
   width: 80%;
   max-width: 1200px;
+  min-width: 400px;
   gap: 10px;
   background-color: var(--primary-light);
 }
 
-.game .game-header .game-header-pictures img {
-  height: 250px;
-  width: calc((75px * 4) + (4 * 5px));
-  object-fit: cover;
+.game .game-header .game-header-pictures {
+  flex-direction: column;
+  align-items: center;
+  width: 50%;
+  min-width: 250px;
+}
+
+.game .game-header .game-header-picture-selected {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding: 10px;
+  max-height: 450px;
+}
+
+.overlay {
+  position: absolute;
   border-radius: 5px;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+.game .game-header .game-header-picture-selected img {
+  width: 90%;
+  min-width: 200px;
+  height: 400px;
+  object-fit: scale-down;
+  border-radius: 5px;
+}
+
+.game .game-header .game-header-pictures-min {
+  position: relative;
+  max-width: 100%;
+  overflow-x: auto;
+  background-color: rgba(0, 0, 0, 0.15);
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.game .game-header .game-header-pictures-min::-webkit-scrollbar {
+  border-radius: 5px;
+  background: var(--primary);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  height: 10px;
+}
+
+.game .game-header .game-header-pictures-min::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background: var(--ligth);
+  border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .game .game-header .game-header-pictures-min img {
@@ -41,6 +91,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 50%;
 }
 
 .game .game-header-title img.platform-logo {
@@ -54,9 +105,155 @@
   width: 80%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.game .game-body a[data-tabs] {
+  min-width: 100px;
+  background-color: var(--primary-light);
+  color: var(--primary);
+  border: none;
+  box-shadow: 0 0 2px var(--primary);
+  font-weight: bold;
+  cursor: pointer;
+  padding: 10px;
+  margin-bottom: 2px;
+  text-align: center;
+}
+
+.game .game-body a[data-tabs]:first-child {
+  border-radius: 5px 0 0 0;
+}
+
+.game .game-body a[data-tabs]:last-child {
+  border-radius: 0 5px 0 0;
+}
+
+.game .game-body a[data-tabs].active {
+  background-color: var(--primary);
+  color: var(--ligth);
+  cursor: default;
+}
+
+.game .game-body a[data-tabs]:hover:not(.active) {
+  opacity: 0.8;
+}
+
+.game .game-body .game-body-tabs {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
   padding: 20px;
   box-shadow: 0 0 3px 1px #1c1c70;
   border-radius: 5px;
   background-color: var(--primary-light);
+}
+
+.game .game-body-tabs div#tab-about,
+.game .game-body-tabs div#tab-comments {
+  display: none;
+}
+
+.game .game-body-tabs div#tab-about.active,
+.game .game-body-tabs div#tab-comments.active {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.game .game-body-tabs div#tab-comments .tab-comment-user,
+.game .game-body-tabs div#tab-comments .tab-comment-user .form,
+.game .game-body-tabs div#tab-about.active,
+.game .game-body-tabs div#tab-comments.active,
+.game .game-body-tabs div#tab-comments .tab-comment-user .form .form-item,
+.game .game-body-tabs div#tab-comments .tab-comment-user textarea {
+  width: 100%;
+}
+
+.game .game-body-tabs div#tab-comments .tab-comment-user {
+  display: flex;
+  flex-direction: column;
+  align-content: flex-end;
+  align-items: flex-end;
+}
+
+.game .game-body-tabs div#tab-comments .tab-comment-user .form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px;
+}
+
+.game .game-body-tabs div#tab-comments .tab-comment-user .form.hidden {
+  display: none;
+}
+
+.game .game-body-tabs div#tab-comments .tab-comment-user .form label {
+  text-decoration: underline;
+}
+
+.game .game-body-tabs div#tab-comments .tab-comment-user .form textarea {
+  height: 120px;
+  resize: none;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.game .game-body-tabs div#tab-comments .tab-comment-user .form .rating-score {
+  display: flex;
+  flex-direction: row;
+}
+
+.game .game-body-tabs div#tab-comments .tab-comment-user .form .rating-score img {
+  width: 30px;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.game .game-body-tabs div#tab-comments .comments {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 10px 0;
+}
+
+.game .game-body-tabs div#tab-comments .comments article {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--ligth);
+  box-shadow: 0 0 3px var(--primary);
+  border-radius: 10px;
+  width: 100%;
+  align-self: center;
+  position: relative;
+}
+
+.game .game-body-tabs div#tab-comments .comments article div.comment-action,
+.game .game-body-tabs div#tab-comments .comments article div.comment-content,
+.game .game-body-tabs div#tab-comments .comments article div.comment-footer {
+  padding: 10px;
+}
+
+.game .game-body-tabs div#tab-comments .comments article div.comment-action {
+  position: absolute;
+  right: 10px;
+  top: -30px;
+}
+
+.game .game-body-tabs div#tab-comments .comments article div.comment-score {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+}
+
+.game .game-body-tabs div#tab-comments .comments article div.comment-score img {
+  width: 20px;
+}
+
+.game .game-body-tabs div#tab-comments .comments article div.comment-footer {
+  padding: 5px 20px;
+  font-size: 0.8em;
+  align-self: flex-end;
+  color: #777;
 }

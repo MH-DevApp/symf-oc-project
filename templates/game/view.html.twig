@@ -1,0 +1,205 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Game{% endblock %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="{{ asset('styles/game.css') }}" />
+  <link rel="stylesheet" href="{{ asset('styles/form.css') }}" />
+{% endblock %}
+
+{% block javascripts %}
+  <script type="text/javascript" src="{{ asset('scripts/view-game.js') }}" defer></script>
+{% endblock %}
+
+{% block body %}
+  <div class="d-flex flex-column g-10 align-items-center pt-25 flex-fill game">
+{#    En tête avec images + titre + ratings#}
+    <div class="game-header">
+      <aside class="game-header-pictures">
+        {#      Image au grand format#}
+        <div class="game-header-picture-selected mb-5">
+          <div class="overlay"></div>
+          {% if game.pictures.count %}
+            <img src="{{ asset(game.pictures[0].path) }}" alt="image {{ game.name }} 1" />
+          {% else %}
+            <img src="{{ asset('images/ui/img-not-found.png') }}" alt="image not found" />
+          {% endif %}
+        </div>
+        <div class="d-flex flex-column">
+          {#      Images au grand petit#}
+          <div class="game-header-pictures-min d-flex flex-row align-items-center justify-content-start g-10">
+            {% if game.pictures.count %}
+              {% for index, picture in game.pictures %}
+                <img {% if index == 0 %}class="active"{% endif %} src="{{ asset(picture.path) }}" alt="image miniature {{ game.name }} number {{ index + 1 }}" />
+              {% endfor %}
+            {% else %}
+              <img class="active" src="{{ asset('images/ui/img-not-found.png') }}" alt="image not found" />
+            {% endif %}
+          </div>
+          {# Accès au bouton d'ajout d'image si l'utilisateur est le créateur #}
+          {% if is_granted('IS_AUTHENTICATED_FULLY') and app.user.games.contains(game)  %}
+          <div class="d-flex flex-row justify-content-center mt-5">
+              <button id="btn-add-picture" type="button" class="btn btn-primary">Ajouter une image</button>
+            {{ form(formPicture) }}
+          </div>
+          {% endif %}
+        </div>
+      </aside>
+      <aside class="game-header-title">
+        {#      Titre du jeu#}
+        <h1 class="mb-10">{{ game.name }}</h1>
+        {# Plateformes du jeu #}
+        <div class="d-flex flex-row align-items-center g-10">
+          {% for index, platform in game.platforms %}
+            <img class="platform-logo" src="{{ asset(platform.picture.path) }}" alt="logo {{ platform.name }}" />
+          {% endfor %}
+        </div>
+        {# Moyennes des votes #}
+        <div class="d-flex flex-row align-items-end mt-10 g-5">
+          {% if ratingScore %}
+            {% for i in range(1, 5) %}
+              <img
+                style="width: 20px;"
+                src="{{ asset('images/ui/star_' ~ (i <= ratingScore|round(0, 'floor') ? 'full' : 'empty') ~ '.png') }}"
+                alt="image star {{ i <= ratingScore|round(0, 'floor') ? 'full' : 'empty' }}">
+            {% endfor %}
+            <span class="ml-5">({{ game.comments.count }})</span>
+          {% else %}
+            {% for i in range(1, 5) %}
+              <img style="width: 20px" src="{{ asset('images/ui/star_empty.png') }}" alt="icon start">
+            {% endfor %}
+            <small class="ml-5">Aucune note</small>
+          {% endif %}
+        </div>
+      </aside>
+    </div>
+    <div class="game-body">
+      <div class="d-flex flex-row justify-content-start ml-10">
+        <a
+          {% if tab != 'about' %}
+          href="{{ path('app_game_view', {name: game.name, tab: 'about'}) }}#tab-about"
+          {% endif %}
+          data-tabs class="{{ tab == 'about' ? 'active' : '' }}"
+        >
+          A Propos
+        </a>
+        <a
+          {% if tab != 'comments' %}
+          href="{{ path('app_game_view', {name: game.name, tab: 'comments'}) }}#tab-comments"
+          {% endif %}
+          data-tabs class="{{ tab == 'comments' ? 'active' : '' }}"
+        >
+          Avis
+        </a>
+      </div>
+      <div class="game-body-tabs">
+        <div id="tab-about" class="{{ tab == 'about' ? 'active' : '' }}">
+          <h3>A propos du jeu</h3>
+          <hr>
+          <p>{{ game.description }}</p>
+        </div>
+        <div id="tab-comments" class="{{ tab == 'comments' ? 'active' : '' }}">
+            {% if is_granted("IS_AUTHENTICATED_FULLY") %}
+              <div class="tab-comment-user">
+                {# FORM RATING #}
+                {{ form_start(formComment, {attr: {class: formComment.content.vars.value ? formComment.vars.attr.class ~ ' hidden' : formComment.vars.attr.class }}) }}
+                  <div class="rating-score" data-score="{{ ratingUserValue ?? 1 }}">
+                    {% for i in range(1, 5) %}
+                      {% if ratingUserValue and i <= ratingUserValue %}
+                        <img data-value="{{ i }}" src="{{ asset('images/ui/star_full.png') }}" alt="image star rating full" />
+                      {% else %}
+                        <img data-value="{{ i }}" src="{{ asset('images/ui/star_'~ (i == 1 ? 'full' : 'empty') ~ '.png') }}" alt="image star rating empty" />
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                {{ form_row(formComment.score, {attr: { value: ratingUserValue ?? 1 }}) }}
+                {{ form_row(formComment.content) }}
+                  <div class="form-item d-flex justify-content-end g-5">
+                    {% if formComment.content.vars.value %}
+                    <button id="btn-cancel-edit-comment" type="button" class="btn btn-danger">Annuler</button>
+                    {% endif %}
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                  </div>
+                {{ form_end(formComment) }}
+              </div>
+            {% endif %}
+          <h3>Avis des utilisateurs ({{ game.comments.count }})</h3>
+          <hr>
+          {% if game.comments.count > 0 %}
+            {# AFFICHER LES COMMENTAIRES #}
+            <div class="comments">
+              {% set commentOfUser = game.comments|filter(c => c.user.id == app.user.id)|first %}
+              {% set comments = game.comments|filter(c => c.user.id != app.user.id) %}
+              {% if commentOfUser %}
+                <h4 class="mb-10">Votre avis</h4>
+                <article>
+                  <div class="comment-action">
+                    <button id="btn-edit-comment" class="btn btn-primary">
+                      Modifier
+                    </button>
+                  </div>
+                  <div class="comment-score">
+                    <span>{{ commentOfUser.user.pseudo }}</span>
+                    <span>
+                      {% for i in range(1, 5) %}
+                        <img
+                          src="{{ asset('images/ui/star_'~(i <= commentOfUser.score ? 'full' : 'empty')~'.png') }}"
+                          alt="image star {{ i <= commentOfUser.score ? 'full' : 'empty' }}"
+                        />
+                      {% endfor %}
+                    </span>
+                    <hr>
+                  </div>
+                  <div class="comment-content">
+                    <span>{{ commentOfUser.content }}</span>
+                  </div>
+                  <div class="comment-footer">
+                    {% if commentOfUser.updatedAt %}
+                      <span>Modifié le {{ commentOfUser.updatedAt|date('d/m/Y à H:i:s') }}</span>
+                    {% else %}
+                      <span>Publié le {{ commentOfUser.createdAt|date('d/m/Y à H:i:s') }}</span>
+                    {% endif %}
+                  </div>
+                </article>
+                <hr class="mt-20 mb-20">
+              {% endif %}
+              {% if comments|length > 0 %}
+                {% for comment in comments %}
+                  <article>
+                    <div class="comment-score">
+                      <span>{{ comment.user.pseudo }}</span>
+                      <span>
+                        {% for i in range(1, 5) %}
+                          <img
+                            src="{{ asset('images/ui/star_'~(i <= comment.score ? 'full' : 'empty')~'.png') }}"
+                            alt="image star {{ i <= comment.score ? 'full' : 'empty' }}"
+                          />
+                        {% endfor %}
+                      </span>
+                      <hr>
+                    </div>
+                    <div class="comment-content">
+                      <span>{{ comment.content }}</span>
+                    </div>
+                    <div class="comment-footer">
+                      {% if comment.updatedAt %}
+                        <span>Modifié le {{ comment.updatedAt|date('d/m/Y à H:i:s') }}</span>
+                      {% else %}
+                        <span>Publié le {{ comment.createdAt|date('d/m/Y à H:i:s') }}</span>
+                      {% endif %}
+                    </div>
+                  </article>
+                {% endfor %}
+              {% else %}
+                <p>Il n'y a aucun avis d'autre utilisateur.</p>
+              {% endif %}
+            </div>
+          {% else %}
+            {# ON INDIQUE QU'IL N'Y A PAS D'AVIS POUR LE MOMENT #}
+            <p>Il n'y a pas encore d'avis pour ce jeu, soyez le premier !</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

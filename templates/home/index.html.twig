@@ -3,5 +3,9 @@
 {% block title %}Homepage{% endblock %}
 
 {% block body %}
-  {#<h1>TEST</h1>#}
+    <div class="d-flex flex-row p-20 mr-30 justify-content-end">
+      {% if is_granted('ROLE_USER') %}
+        <a href="{{ path('app_game_new') }}" class="btn btn-primary">Ajouter un jeu</a>
+      {% endif %}
+    </div>
 {% endblock %}

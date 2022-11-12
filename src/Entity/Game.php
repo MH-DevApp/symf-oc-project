@@ -42,14 +42,11 @@ class Game
   #[ORM\Column(nullable: true)]
   private ?\DateTimeImmutable $updatedAt = null;
 
-  #[ORM\OneToMany(mappedBy: 'game', targetEntity: Picture::class)]
+  #[ORM\OneToMany(mappedBy: 'game', targetEntity: Picture::class, cascade: ['persist', 'remove'])]
   private Collection $pictures;
 
-  #[ORM\OneToMany(mappedBy: 'game', targetEntity: Comment::class)]
+  #[ORM\OneToMany(mappedBy: 'game', targetEntity: Comment::class, cascade: ['persist', 'remove'])]
   private Collection $comments;
-
-  #[ORM\OneToMany(mappedBy: 'game', targetEntity: Rating::class)]
-  private Collection $ratings;
 
   #[ORM\ManyToMany(targetEntity: Platform::class, mappedBy: 'games')]
   private Collection $platforms;
@@ -58,7 +55,6 @@ class Game
   {
     $this->pictures = new ArrayCollection();
     $this->comments = new ArrayCollection();
-    $this->ratings = new ArrayCollection();
     $this->platforms = new ArrayCollection();
   }
 
@@ -193,45 +189,6 @@ class Game
       // set the owning side to null (unless already changed)
       if ($comment->getGame() === $this) {
         $comment->setGame(null);
-      }
-    }
-
-    return $this;
-  }
-
-  /**
-   * @return Collection<int, Rating>
-   */
-  public function getRatings(): Collection
-  {
-    return $this->ratings;
-  }
-
-  public function addRating(Rating $rating): self
-  {
-    if (!$this->ratings->contains($rating)) {
-      $this->ratings->add($rating);
-      $rating->setGame($this);
-    }
-
-    return $this;
-  }
-
-  public function getRatingAverage(): int {
-    $average = 0;
-    foreach ($this->getRatings() as $rating) {
-      $average += $rating->getScore();
-    }
-
-    return $this->getRatings()->count() > 0 ? round($average/$this->getRatings()->count()) : 0;
-  }
-
-  public function removeRating(Rating $rating): self
-  {
-    if ($this->ratings->removeElement($rating)) {
-      // set the owning side to null (unless already changed)
-      if ($rating->getGame() === $this) {
-        $rating->setGame(null);
       }
     }
 
