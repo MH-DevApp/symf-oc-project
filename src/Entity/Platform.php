@@ -29,7 +29,7 @@ class Platform
   #[ORM\OneToMany(mappedBy: 'platform', targetEntity: User::class)]
   private Collection $users;
 
-  #[ORM\OneToOne(mappedBy: 'platform', cascade: ['persist', 'remove'])]
+  #[ORM\OneToOne(mappedBy: 'platform', cascade: ['persist'])]
   private ?Picture $picture = null;
 
   public function __construct()

@@ -30,15 +30,25 @@
           <div class="game-header-pictures-min d-flex flex-row align-items-center justify-content-start g-10">
             {% if game.pictures.count %}
               {% for index, picture in game.pictures %}
-                <img {% if index == 0 %}class="active"{% endif %} src="{{ asset(picture.path) }}" alt="image miniature {{ game.name }} number {{ index + 1 }}" />
+                <img data-picture="{{ picture.id }}" {% if index == 0 %}class="active"{% endif %} src="{{ asset(picture.path) }}" alt="image miniature {{ game.name }} number {{ index + 1 }}" />
               {% endfor %}
             {% else %}
               <img class="active" src="{{ asset('images/ui/img-not-found.png') }}" alt="image not found" />
             {% endif %}
           </div>
           {# Accès au bouton d'ajout d'image si l'utilisateur est le créateur #}
-          {% if is_granted('IS_AUTHENTICATED_FULLY') and app.user.games.contains(game)  %}
+          {% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN')  %}
           <div class="d-flex flex-row justify-content-center mt-5">
+            {% if game.pictures.count %}
+              <a
+                data-prototype="{{ path('app_game_picture_delete', {tab: tab, name: game.name, picture: 'idPicture'}) }}"
+                id="btn-delete-picture"
+                href="{{ path('app_game_picture_delete', {tab: tab, name: game.name, picture: game.pictures[0].id}) }}"
+                class="btn btn-danger mr-5"
+              >
+                Supprimer
+              </a>
+            {% endif %}
               <button id="btn-add-picture" type="button" class="btn btn-primary">Ajouter une image</button>
             {{ form(formPicture) }}
           </div>
@@ -46,6 +56,36 @@
         </div>
       </aside>
       <aside class="game-header-title">
+        {# Formulaire update Title and Platforms #}
+        {% if is_granted('ROLE_ADMIN') %}
+          {{ form_start(formEditGame) }}
+          <div class="card hidden">
+            {{ form_row(formEditGame.name) }}
+            {% if formEditGame.platformsSelected.count > 0 %}
+              <div class="card-item">
+                {{ form_label(formEditGame.platformsSelected) }}
+                <div class="d-flex flex-row justify-content-center align-items-center g-10">
+                  {% for platform in formEditGame.platformsSelected %}
+                    {{ form_row(
+                      platform, {
+                        row_attr: {
+                          class: 'card-option'
+                        },
+                        checked:
+                        game.platforms|filter(p => p.id == platform.vars.value)|length > 0
+                      }
+                    ) }}
+                  {% endfor %}
+                </div>
+                {{ form_errors(formEditGame.platformsSelected) }}
+              </div>
+            {% endif %}
+            <div class="d-flex flex-row">
+              <button id="btn-edit-title-platforms" type="button" class="btn btn-danger mr-5">Annuler</button>
+              <button type="submit" class="btn btn-primary">Enregistrer</button>
+            </div>
+          </div>
+        {% endif %}
         {#      Titre du jeu#}
         <h1 class="mb-10">{{ game.name }}</h1>
         {# Plateformes du jeu #}
@@ -94,12 +134,28 @@
       </div>
       <div class="game-body-tabs">
         <div id="tab-about" class="{{ tab == 'about' ? 'active' : '' }}">
-          <h3>A propos du jeu</h3>
-          <hr>
-          <p>{{ game.description }}</p>
+          {% if is_granted('ROLE_ADMIN') %}
+            <div id="game_description" class="form hidden">
+              {{ form_row(formEditGame.description, {value: game.description, row_attr: { class: 'form-item'}}) }}
+              <div>
+                <button id="btn-cancel-edit-description" type="button" class="btn btn-danger mr-5">Annuler</button>
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
+              </div>
+              {{ form_row(formEditGame._token) }}
+              {{ form_end(formEditGame) }}
+            </div>
+          {% endif %}
+          <div class="tab-about-content d-flex flex-column">
+            {% if is_granted('ROLE_ADMIN') %}
+              <button id="btn-edit-description" type="button" class="btn btn-primary">Modifier</button>
+            {% endif %}
+            <h3>A propos du jeu</h3>
+            <hr>
+            <div>{{ game.description|nl2br }}</div>
+          </div>
         </div>
         <div id="tab-comments" class="{{ tab == 'comments' ? 'active' : '' }}">
-            {% if is_granted("IS_AUTHENTICATED_FULLY") %}
+            {% if is_granted("IS_AUTHENTICATED_FULLY") and not is_granted('ROLE_ADMIN') %}
               <div class="tab-comment-user">
                 {# FORM RATING #}
                 {{ form_start(formComment, {attr: {class: formComment.content.vars.value ? formComment.vars.attr.class ~ ' hidden' : formComment.vars.attr.class }}) }}

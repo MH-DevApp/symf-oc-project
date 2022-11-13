@@ -165,9 +165,11 @@
 .game .game-body-tabs div#tab-comments .tab-comment-user,
 .game .game-body-tabs div#tab-comments .tab-comment-user .form,
 .game .game-body-tabs div#tab-about.active,
+.game .game-body-tabs div#tab-about.active .tab-about-content,
 .game .game-body-tabs div#tab-comments.active,
-.game .game-body-tabs div#tab-comments .tab-comment-user .form .form-item,
-.game .game-body-tabs div#tab-comments .tab-comment-user textarea {
+.form,
+.form .form-item,
+.form textarea {
   width: 100%;
 }
 
@@ -178,26 +180,35 @@
   align-items: flex-end;
 }
 
-.game .game-body-tabs div#tab-comments .tab-comment-user .form {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  padding: 10px;
-}
-
-.game .game-body-tabs div#tab-comments .tab-comment-user .form.hidden {
+.form.hidden,
+div.hidden {
   display: none;
 }
 
-.game .game-body-tabs div#tab-comments .tab-comment-user .form label {
+.form .form-item label {
   text-decoration: underline;
 }
 
-.game .game-body-tabs div#tab-comments .tab-comment-user .form textarea {
+.form .form-item input:not(input[type=checkbox]) {
+  padding: 10px;
+  width: 100%;
+}
+
+.form .form-item textarea {
   height: 120px;
   resize: none;
   padding: 10px;
   margin-top: 10px;
+}
+
+.game .game-body-tabs div#tab-about.active .tab-about-content {
+  position: relative;
+}
+
+.game .game-body-tabs div#tab-about.active .tab-about-content #btn-edit-description {
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
 .game .game-body-tabs div#tab-comments .tab-comment-user .form .rating-score {

@@ -7,6 +7,9 @@
     </div>
     <div>
       {% if app.user %}
+        {% if is_granted('ROLE_ADMIN') %}
+          <a class="btn btn-danger mr-5" href="{{ path('app_home') }}">Tableau de bord Admin</a>
+        {% endif %}
         <a class="btn btn-light mr-5" href="{{ path('app_home') }}">Profil</a>
         <a class="btn btn-light" href="{{ path('app_auth_logout') }}">Déconnexion</a>
       {% else %}

@@ -20,6 +20,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/game')]
@@ -35,11 +37,13 @@ class GameController extends AbstractController
     string $tab,
     Request $request,
     CommentRepository $commentRepository,
+    PlatformRepository $platformRepository,
     EntityManagerInterface $em,
   ): Response
   {
-    if (!$game) {
-      return $this->redirectToRoute('app_home');
+    if (!$game || (!$game->isPublished() && !$this->isGranted('ROLE_ADMIN'))) {
+      $name = $request->attributes->get('name');
+      return throw new NotFoundHttpException('Le jeu "'.$name.'" n\'existe pas.');
     }
 
     $ratingScore = null;
@@ -58,28 +62,66 @@ class GameController extends AbstractController
     ];
 
     if ($this->getUser()) {
-      // FORM PICTURE
-      $picture = new Picture();
-      $formPicture = $this->createForm(PictureType::class, $picture);
-      $formPicture->handleRequest($request);
+      // ADMIN FORMS
+      if ($this->isGranted('ROLE_ADMIN')) {
+        // FORM PICTURE
+        $picture = new Picture();
+        $formPicture = $this->createForm(PictureType::class, $picture);
+        $formPicture->handleRequest($request);
 
-      if ($formPicture->isSubmitted() && $formPicture->isValid()) {
-        $folder = $this->getParameter('game.folder');
-        $ext = $picture->getFile()->guessExtension() ?? 'bin';
-        $filename = bin2hex(random_bytes(10)) . '.' . $ext;
-        $picture->getFile()->move($folder, $filename);
-        $picture->setPath($this->getParameter('game.folder.public_path').'/'.$filename);
-        $picture->setCreatedAt(new DateTimeImmutable('now'));
+        if ($formPicture->isSubmitted() && $formPicture->isValid()) {
+          $folder = $this->getParameter('game.folder').'/'.$this->getParameter('game.folder.public_path');
+          $ext = $picture->getFile()->guessExtension() ?? 'bin';
+          $filename = bin2hex(random_bytes(10)) . '.' . $ext;
+          $picture->getFile()->move($folder, $filename);
+          $picture->setPath($this->getParameter('game.folder.public_path').'/'.$filename);
+          $picture->setCreatedAt(new DateTimeImmutable('now'));
 
-        // UPDATE GAME AND FLUSH
-        $game->addPicture($picture);
-        $em->persist($game);
-        $em->flush();
+          // UPDATE GAME AND FLUSH
+          $game->addPicture($picture);
+          $em->persist($game);
+          $em->flush();
 
-        return $this->redirectToRoute('app_game_view', [
-          'name' => $game->getName(),
-          'tab' => $tab
-        ]);
+          return $this->redirectToRoute('app_game_view', [
+            'name' => $game->getName(),
+            'tab' => $tab
+          ]);
+        }
+
+        // FORM EDIT GAME TITLE AND PLATFORMS
+        $formEditGame = $this->createForm(GameType::class, $game);
+        $formEditGame->handleRequest($request);
+
+        if ($formEditGame->isSubmitted() && $formEditGame->isValid()) {
+          // CLEAR PLATFORM(S)
+          for ($i=0; $i < $game->getPlatforms()->count(); $i++) {
+            $game->removePlatform($game->getPlatforms()[$i]);
+          }
+
+          // ADD SELECTED PLATFORM(S)
+          /** @var array<Platform> $platformsSelected */
+          $platformsSelected = $platformRepository->findByIds($formEditGame->get('platformsSelected')->getData());
+          if (count($platformsSelected)) {
+            foreach ($platformsSelected as $platform) {
+              $game->addPlatform($platform);
+            }
+          }
+
+          $em->persist($game);
+          $em->flush();
+
+          return $this->redirectToRoute('app_game_view', [
+            'name' => $game->getName(),
+            'tab' => $tab
+          ]);
+
+        }
+
+        $options = [
+          ...$options,
+          'formPicture' => $formPicture->createView(),
+          'formEditGame' => $formEditGame->createView()
+        ];
       }
 
       // FORM RATING
@@ -118,12 +160,10 @@ class GameController extends AbstractController
 
       $options = [
         ...$options,
-        'formPicture' => $formPicture->createView(),
         'formComment' => $formRating->createView(),
         'ratingUserValue' => $comment->getId() ? $comment->getScore() : null
       ];
     }
-
 
     return $this->render('game/view.html.twig', [
       ...$options
@@ -138,6 +178,10 @@ class GameController extends AbstractController
     EntityManagerInterface $em,
   ): Response
   {
+
+    if (!$this->isGranted('ROLE_ADMIN')) {
+      return throw new NotFoundHttpException('Oops! Cette page n\'existe pas !');
+    }
     $game = new Game();
 
     $form = $this->createForm(GameType::class, $game);
@@ -174,32 +218,34 @@ class GameController extends AbstractController
     ]);
   }
 
-  #[Route('/edit/{name}', name: 'app_game_edit')]
+  #[Route('/{name}/{tab}/picture/delete/{picture}', name: 'app_game_picture_delete', defaults: ['tab' => 'about'])]
+  #[ParamConverter('game', options: ['mapping' => ['name' => 'name']])]
   #[IsGranted('IS_AUTHENTICATED_FULLY')]
-  public function editGame(
-    Game $game,
-    Request $request,
-    PlatformRepository $repo,
-    EntityManagerInterface $em,
-  ): Response
-  {
-
-    $form = $this->createForm(GameType::class, $game);
-    $form->handleRequest($request);
-
-    if ($form->isSubmitted()) {
-      if ($form->isValid()) {
-        $platformsSelected = $repo->findByIds($form->get('platformsSelected')->getData());
-        dump($platformsSelected);
-      }
-
-      dump($game->getPictures());
-      dump($request);
+  #[IsGranted('ROLE_ADMIN')]
+  public function pictureDelete(
+    ?Game $game,
+    string $tab,
+    ?Picture $picture,
+    EntityManagerInterface $em
+  ): Response {
+    if (!$game || !$picture) {
+      return throw new BadRequestHttpException('Une erreur s\'est produite, veuillez réessayer plus tard.');
     }
+//    dd($this->getParameter('game.folder').'/'.$picture->getPath());
+    if (file_exists(
+      $this->getParameter('game.folder').
+      '/'.
+      $picture->getPath()))
+    {
+      unlink(
+        $this->getParameter('game.folder').
+        '/'.
+        $picture->getPath()
+      );
+    }
+    $em->remove($picture);
+    $em->flush();
 
-    return $this->render('game/form_game.html.twig', [
-      'form' => $form->createView()
-    ]);
+    return $this->redirectToRoute('app_game_view', ['tab' => $tab, 'name' => $game->getName()]);
   }
-
 }
