@@ -250,4 +250,25 @@ class GameController extends AbstractController
 
     return $this->redirectToRoute('app_game_view', ['tab' => $tab, 'name' => $game->getName()]);
   }
+
+  #[Route('/{name}/{tab}/edit/{publish}', name: 'app_game_toogle_published', defaults: ['tab' => 'about'])]
+  #[ParamConverter('game', options: ['mapping' => ['name' => 'name']])]
+  #[IsGranted('IS_AUTHENTICATED_FULLY')]
+  #[IsGranted('ROLE_ADMIN')]
+  public function tooglePublished(
+    ?Game $game,
+    string $tab,
+    bool $publish,
+    EntityManagerInterface $em
+  ): Response {
+    if (!$game) {
+      return throw new BadRequestHttpException('Une erreur s\'est produite, veuillez réessayer plus tard.');
+    }
+    $game->setIsPublished($publish);
+    dump($game);
+    $em->persist($game);
+    $em->flush();
+
+    return $this->redirectToRoute('app_game_view', ['tab' => $tab, 'name' => $game->getName()]);
+  }
 }

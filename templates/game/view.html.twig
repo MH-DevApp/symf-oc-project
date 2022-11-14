@@ -58,6 +58,23 @@
       <aside class="game-header-title">
         {# Formulaire update Title and Platforms #}
         {% if is_granted('ROLE_ADMIN') %}
+          <div class="container-publish">
+            {% if game.isPublished %}
+              <a
+                  href="{{ path('app_game_toogle_published', {name: game.name, tab: tab, publish: 0 }) }}"
+                  class="published"
+              >
+                Article publié
+              </a>
+            {% else %}
+              <a
+                  href="{{ path('app_game_toogle_published', {name: game.name, tab: tab, publish: 1 }) }}"
+                  class="not-published"
+              >
+                Article non publié
+              </a>
+            {% endif %}
+          </div>
           {{ form_start(formEditGame) }}
           <div id="form_game_edit_name_platforms" class="card hidden">
             {{ form_row(formEditGame.name) }}

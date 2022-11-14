@@ -9,6 +9,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  position: relative;
   padding: 20px;
   width: 80%;
   max-width: 1200px;
@@ -92,6 +93,29 @@
   flex-direction: column;
   align-items: center;
   width: 50%;
+}
+
+.game .game-header-title .container-publish {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.game .game-header-title .container-publish .published {
+  padding: 10px 20px;
+  background-color: #22b42d;
+  border-radius: 5px;
+  color: var(--ligth);
+}
+
+.game .game-header-title .container-publish .not-published {
+  padding: 10px 20px;
+  background-color: var(--red-1);
+  border-radius: 5px;
+  color: var(--ligth);
 }
 
 .game .game-header-title img.platform-logo {
