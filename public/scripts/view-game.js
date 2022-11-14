@@ -36,11 +36,28 @@ picturesMinHeader.forEach((img) => {
   });
 });
 
-// TABS ABOUT (DESCRIPTION GAME)
-/** @type {HTMLFormElement} */
-const formDescription = document.querySelector('div#game_description');
+// EDIT GAME (Name, Platforms, Description)
+/** @type {HTMLDivElement} */
+const formNamePlatforms = document.querySelector('div#form_game_edit_name_platforms');
+/** @type {HTMLDivElement} */
+const formDescription = document.querySelector('div#form_game_edit_description');
 
-if (formDescription) {
+if (formNamePlatforms && formDescription) {
+  /** @type {HTMLDivElement} */
+  const divEditNamePlatformsContent =  document.querySelector('div.game-header-title-content');
+  /** @type {HTMLButtonElement} */
+  const btnEditNamePlatforms = divEditNamePlatformsContent.querySelector('.game-header-title-content button#btn-edit-name-platforms');
+  /** @type {HTMLButtonElement} */
+  const btnEditCancelNamePlatforms = formNamePlatforms.querySelector('button#btn-edit-cancel-title-platforms');
+  /** @type {HTMLInputElement} */
+  const inputName = formNamePlatforms.querySelector('input[name="game[name]"]');
+  /** @type {NodeListOf<HTMLInputElement>} */
+  const inputPlatforms = formNamePlatforms.querySelectorAll('input[name="game[platformsSelected][]"]');
+  /** @type {boolean[]} */
+  let oldPlatforms = [];
+  /** @type {string} */
+  let oldName = inputName.value;
+
   /** @type {HTMLDivElement} **/
   const divTabAboutContent = document.querySelector('.game .game-body-tabs #tab-about .tab-about-content');
   /** @type {HTMLButtonElement} */
@@ -49,11 +66,34 @@ if (formDescription) {
   const btnCancelEditDescription = formDescription.querySelector('button#btn-cancel-edit-description')
   /** @type {HTMLInputElement} */
   const inputDescription = formDescription.querySelector('textarea[name="game[description]"]');
+  /** @type {string} */
   let oldDescription = inputDescription.value;
+
+  inputPlatforms.forEach((p) => oldPlatforms.push(p.checked));
+
+  btnEditNamePlatforms.addEventListener('click', () => {
+    divEditNamePlatformsContent.classList.add('hidden');
+    formNamePlatforms.classList.remove('hidden');
+    if (!formDescription.classList.contains('hidden')) {
+      btnCancelEditDescription.click();
+    }
+  });
+
+  btnEditCancelNamePlatforms.addEventListener('click', () => {
+    inputName.value = oldName;
+    inputPlatforms.forEach((p, index) => {
+      p.checked = oldPlatforms[index];
+    });
+    divEditNamePlatformsContent.classList.remove('hidden');
+    formNamePlatforms.classList.add('hidden');
+  });
 
   btnEditDescription.addEventListener('click', () => {
     divTabAboutContent.classList.add('hidden');
     formDescription.classList.remove('hidden');
+    if (!formNamePlatforms.classList.contains('hidden')) {
+      btnEditCancelNamePlatforms.click();
+    }
   });
 
   btnCancelEditDescription.addEventListener('click', () => {

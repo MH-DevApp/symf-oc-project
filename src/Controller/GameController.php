@@ -94,13 +94,15 @@ class GameController extends AbstractController
 
         if ($formEditGame->isSubmitted() && $formEditGame->isValid()) {
           // CLEAR PLATFORM(S)
-          for ($i=0; $i < $game->getPlatforms()->count(); $i++) {
-            $game->removePlatform($game->getPlatforms()[$i]);
+          foreach ($game->getPlatforms() as $platform) {
+            $game->removePlatform($platform);
           }
 
           // ADD SELECTED PLATFORM(S)
           /** @var array<Platform> $platformsSelected */
           $platformsSelected = $platformRepository->findByIds($formEditGame->get('platformsSelected')->getData());
+          dump($platformsSelected);
+
           if (count($platformsSelected)) {
             foreach ($platformsSelected as $platform) {
               $game->addPlatform($platform);
@@ -231,7 +233,7 @@ class GameController extends AbstractController
     if (!$game || !$picture) {
       return throw new BadRequestHttpException('Une erreur s\'est produite, veuillez réessayer plus tard.');
     }
-//    dd($this->getParameter('game.folder').'/'.$picture->getPath());
+
     if (file_exists(
       $this->getParameter('game.folder').
       '/'.

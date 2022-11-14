@@ -59,7 +59,7 @@
         {# Formulaire update Title and Platforms #}
         {% if is_granted('ROLE_ADMIN') %}
           {{ form_start(formEditGame) }}
-          <div class="card hidden">
+          <div id="form_game_edit_name_platforms" class="card hidden">
             {{ form_row(formEditGame.name) }}
             {% if formEditGame.platformsSelected.count > 0 %}
               <div class="card-item">
@@ -81,35 +81,40 @@
               </div>
             {% endif %}
             <div class="d-flex flex-row">
-              <button id="btn-edit-title-platforms" type="button" class="btn btn-danger mr-5">Annuler</button>
+              <button id="btn-edit-cancel-title-platforms" type="button" class="btn btn-danger mr-5">Annuler</button>
               <button type="submit" class="btn btn-primary">Enregistrer</button>
             </div>
           </div>
         {% endif %}
-        {#      Titre du jeu#}
-        <h1 class="mb-10">{{ game.name }}</h1>
-        {# Plateformes du jeu #}
-        <div class="d-flex flex-row align-items-center g-10">
-          {% for index, platform in game.platforms %}
-            <img class="platform-logo" src="{{ asset(platform.picture.path) }}" alt="logo {{ platform.name }}" />
-          {% endfor %}
-        </div>
-        {# Moyennes des votes #}
-        <div class="d-flex flex-row align-items-end mt-10 g-5">
-          {% if ratingScore %}
-            {% for i in range(1, 5) %}
-              <img
-                style="width: 20px;"
-                src="{{ asset('images/ui/star_' ~ (i <= ratingScore|round(0, 'floor') ? 'full' : 'empty') ~ '.png') }}"
-                alt="image star {{ i <= ratingScore|round(0, 'floor') ? 'full' : 'empty' }}">
-            {% endfor %}
-            <span class="ml-5">({{ game.comments.count }})</span>
-          {% else %}
-            {% for i in range(1, 5) %}
-              <img style="width: 20px" src="{{ asset('images/ui/star_empty.png') }}" alt="icon start">
-            {% endfor %}
-            <small class="ml-5">Aucune note</small>
-          {% endif %}
+        <div class="game-header-title-content d-flex flex-column align-items-center">
+            {#      Titre du jeu#}
+            <h1 class="mb-10">{{ game.name }}</h1>
+            {# Plateformes du jeu #}
+            <div class="d-flex flex-row align-items-center g-10">
+                {% for index, platform in game.platforms %}
+                    <img class="platform-logo" src="{{ asset(platform.picture.path) }}" alt="logo {{ platform.name }}" />
+                {% endfor %}
+            </div>
+            {# Moyennes des votes #}
+            <div class="d-flex flex-row align-items-end mt-10 g-5">
+                {% if ratingScore %}
+                    {% for i in range(1, 5) %}
+                        <img
+                                style="width: 20px;"
+                                src="{{ asset('images/ui/star_' ~ (i <= ratingScore|round(0, 'floor') ? 'full' : 'empty') ~ '.png') }}"
+                                alt="image star {{ i <= ratingScore|round(0, 'floor') ? 'full' : 'empty' }}">
+                    {% endfor %}
+                    <span class="ml-5">({{ game.comments.count }})</span>
+                {% else %}
+                    {% for i in range(1, 5) %}
+                        <img style="width: 20px" src="{{ asset('images/ui/star_empty.png') }}" alt="icon start">
+                    {% endfor %}
+                    <small class="ml-5">Aucune note</small>
+                {% endif %}
+            </div>
+            <div class="d-flex flex-row justify-content-center mt-10">
+                <button id="btn-edit-name-platforms" type="button" class="btn btn-primary">Modifier</button>
+            </div>
         </div>
       </aside>
     </div>
@@ -135,7 +140,7 @@
       <div class="game-body-tabs">
         <div id="tab-about" class="{{ tab == 'about' ? 'active' : '' }}">
           {% if is_granted('ROLE_ADMIN') %}
-            <div id="game_description" class="form hidden">
+            <div id="form_game_edit_description" class="form hidden">
               {{ form_row(formEditGame.description, {value: game.description, row_attr: { class: 'form-item'}}) }}
               <div>
                 <button id="btn-cancel-edit-description" type="button" class="btn btn-danger mr-5">Annuler</button>
