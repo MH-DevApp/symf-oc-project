@@ -2,8 +2,43 @@
 
 {% block title %}Homepage{% endblock %}
 
+{% block stylesheets %}
+  <link rel="stylesheet" href="{{ asset('styles/home.css') }}" />
+{% endblock %}
+
 {% block body %}
-    <div class="d-flex flex-row p-20 mr-30 justify-content-end">
-        
+  <div class="home">
+    <div class="home-header">
+      {{ form_start(formSearch) }}
+      {{ form_row(formSearch.search) }}
+      {{ form_end(formSearch) }}
     </div>
+    <div class="home-body">
+      {% for game in games %}
+      <article class="card">
+        <div class="card-img">
+          {% if game.pictures.count > 0 %}
+            <img src="{{ asset(game.pictures[0].path) }}" alt="image game {{ game.name }}" />
+          {% else %}
+            <img src="{{ asset('images/ui/img-not-found.png') }}" alt="image not found" />
+          {% endif %}
+        </div>
+        {{ game.name }}
+      </article>
+      <article class="card">
+        <div class="card-img">
+          {% if game.pictures.count > 0 %}
+            <img src="https://imgs.callofduty.com/content/dam/atvi/callofduty/cod-touchui/mw2/meta-images/reveal/mw2-reveal-meta-share.jpg" alt="image game {{ game.name }}" />
+          {% else %}
+            <img src="{{ asset('images/ui/img-not-found.png') }}" alt="image not found" />
+          {% endif %}
+        </div>
+        {{ game.name }}
+      </article>
+    </div>
+    <div class="home-footer">
+      PAGINATOR
+    </div>
+    {% endfor %}
+  </div>
 {% endblock %}

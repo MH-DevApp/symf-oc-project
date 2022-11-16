@@ -195,6 +195,19 @@ class Game
     return $this;
   }
 
+  public function getScore(): int {
+    $score = 0;
+    /** @var Comment $comment */
+    foreach ($this->comments as $comment) {
+      $score += $comment->getScore();
+    }
+
+    return
+      $this->comments->count() > 0 ?
+      round($score/$this->comments->count(), 0, PHP_ROUND_HALF_DOWN) :
+      0;
+  }
+
   /**
    * @return Collection<int, Platform>
    */
