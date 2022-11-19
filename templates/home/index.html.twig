@@ -6,8 +6,12 @@
   <link rel="stylesheet" href="{{ asset('styles/home.css') }}" />
 {% endblock %}
 
+{% block javascripts %}
+  <script src="{{ asset('scripts/home.js') }}" type="text/javascript" defer></script>
+{% endblock %}
+
 {% block body %}
-  <div class="home">
+  <div class="home flex-fill">
     <div class="home-header">
       {{ form_start(formSearch) }}
       {{ form_row(formSearch.search) }}
@@ -16,6 +20,7 @@
     <div class="home-body">
       {% for game in games %}
       <article class="card">
+        <a data-link class="hidden" href="{{ path('app_game_view', {name: game.name}) }}"></a>
         <div class="card-img">
           {% if game.pictures.count > 0 %}
             <img src="{{ asset(game.pictures[0].path) }}" alt="image game {{ game.name }}" />
@@ -23,17 +28,18 @@
             <img src="{{ asset('images/ui/img-not-found.png') }}" alt="image not found" />
           {% endif %}
         </div>
-        {{ game.name }}
-      </article>
-      <article class="card">
-        <div class="card-img">
-          {% if game.pictures.count > 0 %}
-            <img src="https://imgs.callofduty.com/content/dam/atvi/callofduty/cod-touchui/mw2/meta-images/reveal/mw2-reveal-meta-share.jpg" alt="image game {{ game.name }}" />
-          {% else %}
-            <img src="{{ asset('images/ui/img-not-found.png') }}" alt="image not found" />
-          {% endif %}
+        <div class="card-body">
+          <div class="card-body-title">
+            <h4>{{ game.name }}</h4>
+          </div>
+          <div class="card-body-content">
+            {{ game.description|nl2br }}
+          </div>
+          <div class="card-body-footer">
+            <small>{{ game.createdAt|date('') }} par {{ game.author.pseudo }}</small>
+            <small>{{ game.comments.count }} commentaires</small>
+          </div>
         </div>
-        {{ game.name }}
       </article>
     </div>
     <div class="home-footer">
