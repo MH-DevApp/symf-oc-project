@@ -34,8 +34,6 @@ class Game
   #[ORM\Column]
   private ?bool $isPublished = false;
 
-  #[ORM\OneToOne]
-
   #[ORM\Column]
   private ?\DateTimeImmutable $createdAt = null;
 
