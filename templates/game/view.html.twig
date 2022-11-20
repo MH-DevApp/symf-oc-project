@@ -3,8 +3,8 @@
 {% block title %}Game{% endblock %}
 
 {% block stylesheets %}
-  <link rel="stylesheet" href="{{ asset('styles/game.css') }}" />
-  <link rel="stylesheet" href="{{ asset('styles/form.css') }}" />
+  <link rel="stylesheet" href="{{ asset('styles/game.css') }}"/>
+  <link rel="stylesheet" href="{{ asset('styles/form.css') }}"/>
 {% endblock %}
 
 {% block javascripts %}
@@ -13,45 +13,46 @@
 
 {% block body %}
   <div class="d-flex flex-column g-10 align-items-center pt-25 flex-fill game">
-{#    En tête avec images + titre + ratings#}
+    {#    En tête avec images + titre + ratings #}
     <div class="game-header">
       <aside class="game-header-pictures">
-        {#      Image au grand format#}
+        {#      Image au grand format #}
         <div class="game-header-picture-selected mb-5">
           <div class="overlay"></div>
           {% if game.pictures.count %}
-            <img src="{{ asset(game.pictures[0].path) }}" alt="image {{ game.name }} 1" />
+            <img src="{{ asset(game.pictures[0].path) }}" alt="image {{ game.name }} 1"/>
           {% else %}
-            <img src="{{ asset('images/ui/img-not-found.png') }}" alt="image not found" />
+            <img src="{{ asset('images/ui/img-not-found.png') }}" alt="image not found"/>
           {% endif %}
         </div>
         <div class="d-flex flex-column">
-          {#      Images au grand petit#}
+          {#      Images au grand petit #}
           <div class="game-header-pictures-min d-flex flex-row align-items-center justify-content-start g-10">
             {% if game.pictures.count %}
               {% for index, picture in game.pictures %}
-                <img data-picture="{{ picture.id }}" {% if index == 0 %}class="active"{% endif %} src="{{ asset(picture.path) }}" alt="image miniature {{ game.name }} number {{ index + 1 }}" />
+                <img data-picture="{{ picture.id }}" {% if index == 0 %}class="active"{% endif %}
+                     src="{{ asset(picture.path) }}" alt="image miniature {{ game.name }} number {{ index + 1 }}"/>
               {% endfor %}
             {% else %}
-              <img class="active" src="{{ asset('images/ui/img-not-found.png') }}" alt="image not found" />
+              <img class="active" src="{{ asset('images/ui/img-not-found.png') }}" alt="image not found"/>
             {% endif %}
           </div>
           {# Accès au bouton d'ajout d'image si l'utilisateur est le créateur #}
-          {% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN')  %}
-          <div class="d-flex flex-row justify-content-center mt-5">
-            {% if game.pictures.count %}
-              <a
-                data-prototype="{{ path('app_game_picture_delete', {tab: tab, name: game.name, picture: 'idPicture'}) }}"
-                id="btn-delete-picture"
-                href="{{ path('app_game_picture_delete', {tab: tab, name: game.name, picture: game.pictures[0].id}) }}"
-                class="btn btn-danger mr-5"
-              >
-                Supprimer
-              </a>
-            {% endif %}
+          {% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted('ROLE_ADMIN') %}
+            <div class="d-flex flex-row justify-content-center mt-5">
+              {% if game.pictures.count %}
+                <a
+                  data-prototype="{{ path('app_game_picture_delete', {tab: tab, name: game.name, picture: 'idPicture'}) }}"
+                  id="btn-delete-picture"
+                  href="{{ path('app_game_picture_delete', {tab: tab, name: game.name, picture: game.pictures[0].id}) }}"
+                  class="btn btn-danger mr-5"
+                >
+                  Supprimer
+                </a>
+              {% endif %}
               <button id="btn-add-picture" type="button" class="btn btn-primary">Ajouter une image</button>
-            {{ form(formPicture) }}
-          </div>
+              {{ form(formPicture) }}
+            </div>
           {% endif %}
         </div>
       </aside>
@@ -61,15 +62,15 @@
           <div class="container-publish">
             {% if game.isPublished %}
               <a
-                  href="{{ path('app_game_toogle_published', {name: game.name, tab: tab, publish: 0 }) }}"
-                  class="published"
+                href="{{ path('app_game_toogle_published', {name: game.name, tab: tab, publish: 0 }) }}"
+                class="published"
               >
                 Article publié
               </a>
             {% else %}
               <a
-                  href="{{ path('app_game_toogle_published', {name: game.name, tab: tab, publish: 1 }) }}"
-                  class="not-published"
+                href="{{ path('app_game_toogle_published', {name: game.name, tab: tab, publish: 1 }) }}"
+                class="not-published"
               >
                 Article non publié
               </a>
@@ -104,34 +105,36 @@
           </div>
         {% endif %}
         <div class="game-header-title-content d-flex flex-column align-items-center">
-            {#      Titre du jeu#}
-            <h1 class="mb-10">{{ game.name }}</h1>
-            {# Plateformes du jeu #}
-            <div class="d-flex flex-row align-items-center g-10">
-                {% for index, platform in game.platforms %}
-                    <img class="platform-logo" src="{{ asset(platform.picture.path) }}" alt="logo {{ platform.name }}" />
-                {% endfor %}
-            </div>
-            {# Moyennes des votes #}
-            <div class="d-flex flex-row align-items-end mt-10 g-5">
-                {% if ratingScore %}
-                    {% for i in range(1, 5) %}
-                        <img
-                                style="width: 20px;"
-                                src="{{ asset('images/ui/star_' ~ (i <= ratingScore|round(0, 'floor') ? 'full' : 'empty') ~ '.png') }}"
-                                alt="image star {{ i <= ratingScore|round(0, 'floor') ? 'full' : 'empty' }}">
-                    {% endfor %}
-                    <span class="ml-5">({{ game.comments.count }})</span>
-                {% else %}
-                    {% for i in range(1, 5) %}
-                        <img style="width: 20px" src="{{ asset('images/ui/star_empty.png') }}" alt="icon start">
-                    {% endfor %}
-                    <small class="ml-5">Aucune note</small>
-                {% endif %}
-            </div>
+          {#      Titre du jeu #}
+          <h1 class="mb-10">{{ game.name }}</h1>
+          {# Plateformes du jeu #}
+          <div class="d-flex flex-row align-items-center g-10">
+            {% for index, platform in game.platforms %}
+              <img class="platform-logo" src="{{ asset(platform.picture.path) }}" alt="logo {{ platform.name }}"/>
+            {% endfor %}
+          </div>
+          {# Moyennes des votes #}
+          <div class="d-flex flex-row align-items-end mt-10 g-5">
+            {% if ratingScore %}
+              {% for i in range(1, 5) %}
+                <img
+                  style="width: 20px;"
+                  src="{{ asset('images/ui/star_' ~ (i <= ratingScore|round(0, 'floor') ? 'full' : 'empty') ~ '.png') }}"
+                  alt="image star {{ i <= ratingScore|round(0, 'floor') ? 'full' : 'empty' }}">
+              {% endfor %}
+              <span class="ml-5">({{ game.comments.count }})</span>
+            {% else %}
+              {% for i in range(1, 5) %}
+                <img style="width: 20px" src="{{ asset('images/ui/star_empty.png') }}" alt="icon start">
+              {% endfor %}
+              <small class="ml-5">Aucune note</small>
+            {% endif %}
+          </div>
+          {% if is_granted('ROLE_ADMIN') %}
             <div class="d-flex flex-row justify-content-center mt-10">
-                <button id="btn-edit-name-platforms" type="button" class="btn btn-primary">Modifier</button>
+              <button id="btn-edit-name-platforms" type="button" class="btn btn-primary">Modifier</button>
             </div>
+          {% endif %}
         </div>
       </aside>
     </div>
@@ -139,7 +142,7 @@
       <div class="d-flex flex-row justify-content-start ml-10">
         <a
           {% if tab != 'about' %}
-          href="{{ path('app_game_view', {name: game.name, tab: 'about'}) }}#tab-about"
+            href="{{ path('app_game_view', {name: game.name, tab: 'about'}) }}#tab-about"
           {% endif %}
           data-tabs class="{{ tab == 'about' ? 'active' : '' }}"
         >
@@ -147,7 +150,7 @@
         </a>
         <a
           {% if tab != 'comments' %}
-          href="{{ path('app_game_view', {name: game.name, tab: 'comments'}) }}#tab-comments"
+            href="{{ path('app_game_view', {name: game.name, tab: 'comments'}) }}#tab-comments"
           {% endif %}
           data-tabs class="{{ tab == 'comments' ? 'active' : '' }}"
         >
@@ -177,30 +180,32 @@
           </div>
         </div>
         <div id="tab-comments" class="{{ tab == 'comments' ? 'active' : '' }}">
-            {% if is_granted("IS_AUTHENTICATED_FULLY") and not is_granted('ROLE_ADMIN') %}
-              <div class="tab-comment-user">
-                {# FORM RATING #}
-                {{ form_start(formComment, {attr: {class: formComment.content.vars.value ? formComment.vars.attr.class ~ ' hidden' : formComment.vars.attr.class }}) }}
-                  <div class="rating-score" data-score="{{ ratingUserValue ?? 1 }}">
-                    {% for i in range(1, 5) %}
-                      {% if ratingUserValue and i <= ratingUserValue %}
-                        <img data-value="{{ i }}" src="{{ asset('images/ui/star_full.png') }}" alt="image star rating full" />
-                      {% else %}
-                        <img data-value="{{ i }}" src="{{ asset('images/ui/star_'~ (i == 1 ? 'full' : 'empty') ~ '.png') }}" alt="image star rating empty" />
-                      {% endif %}
-                    {% endfor %}
-                  </div>
-                {{ form_row(formComment.score, {attr: { value: ratingUserValue ?? 1 }}) }}
-                {{ form_row(formComment.content) }}
-                  <div class="form-item d-flex justify-content-end g-5">
-                    {% if formComment.content.vars.value %}
-                    <button id="btn-cancel-edit-comment" type="button" class="btn btn-danger">Annuler</button>
-                    {% endif %}
-                    <button type="submit" class="btn btn-primary">Enregistrer</button>
-                  </div>
-                {{ form_end(formComment) }}
+          {% if is_granted("IS_AUTHENTICATED_FULLY") and not is_granted('ROLE_ADMIN') %}
+            <div class="tab-comment-user">
+              {# FORM RATING #}
+              {{ form_start(formComment, {attr: {class: formComment.content.vars.value ? formComment.vars.attr.class ~ ' hidden' : formComment.vars.attr.class }}) }}
+              <div class="rating-score" data-score="{{ ratingUserValue ?? 1 }}">
+                {% for i in range(1, 5) %}
+                  {% if ratingUserValue and i <= ratingUserValue %}
+                    <img data-value="{{ i }}" src="{{ asset('images/ui/star_full.png') }}"
+                         alt="image star rating full"/>
+                  {% else %}
+                    <img data-value="{{ i }}" src="{{ asset('images/ui/star_'~ (i == 1 ? 'full' : 'empty') ~ '.png') }}"
+                         alt="image star rating empty"/>
+                  {% endif %}
+                {% endfor %}
               </div>
-            {% endif %}
+              {{ form_row(formComment.score, {attr: { value: ratingUserValue ?? 1 }}) }}
+              {{ form_row(formComment.content) }}
+              <div class="form-item d-flex justify-content-end g-5">
+                {% if formComment.content.vars.value %}
+                  <button id="btn-cancel-edit-comment" type="button" class="btn btn-danger">Annuler</button>
+                {% endif %}
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
+              </div>
+              {{ form_end(formComment) }}
+            </div>
+          {% endif %}
           <h3>Avis des utilisateurs ({{ game.comments.count }})</h3>
           <hr>
           {% if game.comments.count > 0 %}

@@ -14,6 +14,7 @@ class SearchGameType extends AbstractType
         $builder
             ->add('search', SearchType::class, [
               'label' => false,
+              'required' => false,
               'attr' => [
                 'placeholder' => 'Rechercher un jeu...'
               ],

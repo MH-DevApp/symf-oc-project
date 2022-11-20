@@ -52,6 +52,49 @@ class GameRepository extends ServiceEntityRepository
       ->getSingleScalarResult();
   }
 
+  public function getGamesByName(
+    string $value,
+    bool $isPublished,
+    int $limit,
+    int $offset)
+  : array {
+    $qb = $this->createQueryBuilder('g')
+      ->where('g.name LIKE :name')
+      ->setParameter('name', $value.'%');
+
+    if (!$isPublished) {
+      $qb = $qb->andWhere('g.isPublished = true');
+    }
+
+    $gamesStartName = $qb
+      ->orderBy('g.createdAt', 'DESC')
+      ->setFirstResult($offset)
+      ->setMaxResults($limit)
+      ->getQuery()
+      ->getResult();
+
+    $qb = $this->createQueryBuilder('g')
+      ->where('g.name NOT IN (:games)')
+      ->andwhere('g.name LIKE :name')
+      ->setParameters([
+        'name' => '%'.$value.'%',
+        'games' => array_map(function($g) { return $g->getName(); }, $gamesStartName)
+      ]);
+
+    if (!$isPublished) {
+      $qb = $qb->andWhere('g.isPublished = true');
+    }
+
+    $gamesContainsName = $qb
+      ->orderBy('g.createdAt', 'DESC')
+      ->setFirstResult($offset)
+      ->setMaxResults($limit-count($gamesStartName))
+      ->getQuery()
+      ->getResult();
+
+    return [...$gamesStartName, ...$gamesContainsName];
+  }
+
 //    /**
 //     * @return Game[] Returns an array of Game objects
 //     */

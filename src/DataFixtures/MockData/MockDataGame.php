@@ -161,6 +161,78 @@ class MockDataGame {
       "platforms" => ["playstation", "nintendo", "xbox", "pc"]
     ];
 
+    // Sekiro™: Shadows Die Twice
+    $datas[] = [
+      "name" => "Sekiro™: Shadows Die Twice",
+      "description" => "
+        L'édition Game of the Year ajoute le contenu bonus suivant :
+          - Reflet et Défi de force : nouveaux modes de défi de boss
+          - Fragments : laissez des messages et des enregistrements de vos actions que les autres joueurs peuvent voir et noter
+          - 3 skins cosmétiques à débloquer
+
+        Jeu de l'année - The Game Awards 2019
+        Meilleur jeu d'action 2019 - IGN
+        Plus de 50 récompenses et nominations
+
+        Suivez votre chemin vers la vengeance dans cette nouvelle aventure primée développée par FromSoftware, les créateurs de Bloodborne et de Dark Souls.
+
+        Dans Sekiro™: Shadows Die Twice, vous incarnez le 'loup à un bras', un guerrier en disgrâce défiguré qui a frôle la mort. Assigné à la protection d'un jeune seigneur, descendant d'une lignée ancienne, vous devenez la cible d'ennemis plus vicieux les uns que les autres, dont le dangereux clan Ashina. Lorsque le jeune seigneur est capturé, rien ne peut vous arrêter dans votre quête pour retrouver l'honneur, même pas la mort elle-même.
+
+        Explorez le Japon Sengoku de la fin des années 1500 et affrontez des ennemis démesurés dans un monde torturé. Déchaînez un arsenal d'outils prothétiques et de capacités de ninja, en mêlant discrétion, transversalité et verticalité, à des duels sans pitié.
+
+        Vengez-vous. Recouvrez votre honneur. Tuez avec ingéniosité.
+      ",
+      "createdAt" => new DateTimeImmutable(sprintf("-%d days", rand(1, 365))),
+      "nbPictures" => 5,
+      "platforms" => ["playstation", "xbox", "pc"]
+    ];
+
+    // F1® Manager 2022
+    $datas[] = [
+      "name" => "F1® Manager 2022",
+      "description" => "
+        Marquez l'histoire de la F1® avec le jeu officiel F1® Manager 2022. Devenez manager de votre constructeur favori et faites vos sélections dans la liste des pilotes et du personnel de 2022. Grâce à la licence officielle F1® et à une présentation proche du réel, F1® Manager 2022 est plus qu'un jeu, c'est une aventure.
+
+        Carrière – Devenez le meilleur
+        Écrivez un nouveau chapitre et ouvrez une nouvelle ère pour la F1®. Choisissez votre équipe de F1® et guidez-la vers la victoire à travers les courses officielles de la saison 2022. Commencez à l'arrière de la grille ou prenez place en pole position : dans F1® Manager, c'est à vous de faire tous les choix. Votre mission sera d'impressionner le comité directeur an atteignant vos objectifs chaque saison ainsi que ceux à long terme, et d'assurer le succès de votre équipe pour les années à venir.
+
+        Le QG – Construisez votre équipe
+        L'équipe du constructeur constitue le cœur des opérations. Entre chaque course, contrôlez tous les détails de votre équipe depuis le QG. Suivez les performances de vos pilotes et de votre équipe, équilibrez votre budget et allez chercher les meilleurs éléments des équipes rivales pour prendre l'avantage lors des courses suivantes.
+
+        L'usine – Perfectionnez votre voiture
+        Découvrez les nouveaux concepts de véhicules de 2022 et approchez-vous de vos adversaires comme jamais auparavant. Attribuez de nouvelles pièces à vos voitures pour vous préparer à la course à venir. Construisez votre machine pour prendre l'avantage dans les prochains circuits. Allez-vous développer un système équilibré, tenter de compenser vos faiblesses, ou vous concentrer sur un aspect spécifique ?
+
+        La course – Élaborez et appliquez votre stratégie
+        De la ligne de départ au drapeau de l'arrivée, c'est vous qui tenez les commandes. Contrôlez toutes les décisions, depuis la stratégie des stands jusqu'au choix des pneus en passant par les pilotes. Planifiez votre approche, mais préparez-vous à devoir vous adapter aux évènements dynamiques de chaque course, comme la météo ou les conditions changeantes du circuit. Plongez-vous dans une simulation hyperréaliste d'une course de F1® officielle, avec des images proches du réel.
+      ",
+      "createdAt" => new DateTimeImmutable(sprintf("-%d days", rand(1, 365))),
+      "nbPictures" => 9,
+      'platforms' => ['playstation', 'xbox', 'pc']
+    ];
+
+    // Sid Meier’s Civilization® VI
+    $datas[] = [
+      "name" => "Sid Meier’s Civilization® VI",
+      "description" => "
+        Civilization VI propose de nouvelles façons d'interagir avec votre monde : les villes s'étendent désormais réellement sur la carte, la recherche active dans les domaines de la technologie et de la culture débloquent de nouvelles possibilités, et les chefs rivaux poursuivent leurs propres objectifs en fonction de leurs caractéristiques historiques, alors que vous vous engagez dans l'une de cinq voies vers la victoire dans le jeu.
+        
+        Visualisez les splendeurs de votre empire s'étendre à travers la carte comme jamais auparavant. Chaque quartier, chaque merveille et chaque amélioration est bâtie sur sa propre case, vous permettant de personnaliser votre ville autant que vous le souhaiterez.
+        De la plateforme commerciale au spacioport, chaque quartier fournit ses propres bonus uniques. Sélectionnez quels quartiers construire pour répondre à vos besoins !
+        Bâtissez mieux que vos concurrents, positionnez-vous de façon stratégique par rapport à vos alliés, et devenez la meilleure civilisation sur Terre.
+        
+        Boostez les progrès de votre civilisation à travers l'histoire pour être le premier à débloquer des bonus puissants ! Pour avancer plus vite, utilisez vos unités pour lancer une exploration active, pour développer votre environnement et pour découvrir de nouvelles sociétés.
+        La recherche ne se limite pas aux sciences. Explorez l'arbre des dogmes pour débloquer des nouvelles doctrines politiques et culturelles puissantes.
+        Développez une civilisation qui s'aligne avec votre mode de jeu, ou changez-la à chaque partie !
+        
+        Vos relations diplomatiques évoluent au fur et à mesure que vous progressez, depuis les premières interactions primitives où les conflits sont un fait inévitable, jusqu'aux alliances et négociations aux stades plus avancés du jeu.
+        Influencez les cités-états locales pour bénéficier de leur allégeance diplomatique et remporter des bonus de cité-état qui pourraient changer le cours déroulement du jeu.
+        Recrutez des espions pour obtenir des informations cruciales sur les civilisations rivales, voler des ressources précieuses et même faire chuter des gouvernements.
+      ",
+      "createdAt" => new DateTimeImmutable(sprintf("-%d days", rand(1, 365))),
+      "nbPictures" => 8,
+      'platforms' => ['playstation', 'xbox', 'pc', 'nintendo']
+    ];
+
     return $datas;
   }
 }
