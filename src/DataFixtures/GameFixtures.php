@@ -23,7 +23,6 @@ class GameFixtures extends Fixture implements DependentFixtureInterface
       $platformsDatas = $manager->getRepository(Platform::class)->findAll();
 
       $author = array_filter($usersDatas, function($u) { return $u->getPseudo() === "Admin"; });
-      $users = array_filter($usersDatas, function($u) { return $u->getPseudo() !== "Admin"; });
 
       try {
         $gamesData = MockDataGame::getDatasGame();

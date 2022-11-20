@@ -211,8 +211,8 @@
           {% if game.comments.count > 0 %}
             {# AFFICHER LES COMMENTAIRES #}
             <div class="comments">
-              {% set commentOfUser = game.comments|filter(c => c.user.id == app.user.id)|first %}
-              {% set comments = game.comments|filter(c => c.user.id != app.user.id) %}
+              {% set commentOfUser = is_granted('IS_AUTHENTICATED_FULLY') ? game.comments|filter(c => c.user.id == app.user.id)|first : null %}
+              {% set comments = is_granted('IS_AUTHENTICATED_FULLY') ? game.comments|filter(c => c.user.id != app.user.id) : game.comments %}
               {% if commentOfUser %}
                 <h4 class="mb-10">Votre avis</h4>
                 <article>

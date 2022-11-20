@@ -249,6 +249,7 @@ div.hidden {
   flex-direction: column;
   width: 100%;
   padding: 10px 0;
+  row-gap: 10px;
 }
 
 .game .game-body-tabs div#tab-comments .comments article {

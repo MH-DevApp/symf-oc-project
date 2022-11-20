@@ -207,7 +207,7 @@ class MockDataGame {
       ",
       "createdAt" => new DateTimeImmutable(sprintf("-%d days", rand(1, 365))),
       "nbPictures" => 9,
-      'platforms' => ['playstation', 'xbox', 'pc']
+      "platforms" => ["playstation", "xbox", "pc"]
     ];
 
     // Sid Meier’s Civilization® VI
@@ -230,7 +230,119 @@ class MockDataGame {
       ",
       "createdAt" => new DateTimeImmutable(sprintf("-%d days", rand(1, 365))),
       "nbPictures" => 8,
-      'platforms' => ['playstation', 'xbox', 'pc', 'nintendo']
+      "platforms" => ["playstation", "xbox", "pc", "nintendo"]
+    ];
+
+    // Rust
+    $datas[] = [
+      "name" => "Rust",
+      "description" => "
+        Dans Rust, le seul but est de survivre.
+
+        Pour cela, vous devrez surmonter des difficultés telles que la faim, la soif, et le froid. Allumez un feu. Construisez un abri. Tuez des animaux pour leur viande. Protégez-vous des autres joueurs, et tuez-les pour leur viande. Créez des alliances avec d'autres joueurs et développez une ville.
+
+        Faites ce qu'il faut pour survivre.
+      ",
+      "createdAt" => new DateTimeImmutable(sprintf("-%d days", rand(1, 365))),
+      "nbPictures" => 14,
+      "platforms" => ["pc"]
+    ];
+
+    // PUBG: BATTLEGROUNDS
+    $datas[] = [
+      "name" => "PUBG: BATTLEGROUNDS",
+      "description" => "
+        ATTERRISSEZ, PILLEZ, SURVIVEZ !
+        Jouez gratuitement à PUBG: BATTLEGROUNDS.
+        
+        Atterrissez à des emplacements stratégiques, pillez des armes et du ravitaillement, puis survivez pour devenir la dernière équipe en lice lors de combats farouches sur des champs de bataille tout aussi divers que variés.
+        Formez une escouade et ruez-vous sur les champs de bataille pour vivre l’authentique expérience originale \"sang pour sang\" Battle Royale que seule PUBG: BATTLEGROUNDS peut vous offrir.
+      ",
+      "createdAt" => new DateTimeImmutable(sprintf("-%d days", rand(1, 365))),
+      "nbPictures" => 13,
+      "platforms" => ["playstation", "xbox", "pc"]
+    ];
+
+    // The Elder Scrolls® Online
+    $datas[] = [
+      "name" => "The Elder Scrolls® Online",
+      "description" => "
+        Vivez une histoire en expansion constante dans tout Tamriel avec The Elder Scrolls Online, un RPG en ligne primé. Explorez un monde riche et vivant entre amis ou partez pour une aventure solo.
+        
+        JOUEZ COMME VOUS VOULEZ
+        Combat, artisanat, vol, exploration… combinez différents types d’équipements et de compétences pour créer votre propre style de jeu. Le choix vous appartient, dans un monde Elder Scrolls persistant et en expansion constante.
+
+        RACONTEZ VOTRE HISTOIRE
+        Découvrez les secrets de Tamriel tandis que vous partez en quête de votre âme perdue et sauvez le monde face à Oblivion. Vivez toutes les histoires dans toutes les régions du monde, dans l’ordre que vous voudrez… seul ou en groupe.
+
+        UN JDR MULTIJOUEUR
+        Accomplissez les quêtes entre amis, rejoignez d’autres aventuriers pour explorer de dangereux donjons remplis de monstres, ou participez à des batailles JcJ épiques entre plusieurs centaines de joueurs.
+      ",
+      "createdAt" => new DateTimeImmutable(sprintf("-%d days", rand(1, 365))),
+      "nbPictures" => 7,
+      "platforms" => ["pc"]
+    ];
+
+    // Grand Theft Auto V
+    $datas[] = [
+      "name" => "Grand Theft Auto V",
+      "description" => "
+        Lorsqu'un jeune arnaqueur, un braqueur de banque à la retraite et un terrifiant psychopathe se retrouvent piégés par de grands criminels, le gouvernement américain et l'industrie du divertissement, ils décident de se lancer dans une série de braquages pour survivre dans une ville sans pitié, où ils ne peuvent se fier à personne, même entre eux.
+
+        Grand Theft Auto V sur PC offre aux joueurs la possibilité d'explorer le monde de Los Santos et Blaine County en haute résolution (jusqu'à 4K) et à 60 images par seconde.
+
+        Le jeu propose également tout un panel d'options de personnalisation spécifiques au PC, incluant 25 paramètres distincts de qualité de texture, d'ombres, de pavage, d'anticrénelage et d'autres, ainsi que la possibilité de personnaliser intégralement les commandes de la souris et du clavier. Les options permettent également de contrôler la densité du trafic, pour les piétons et les automobilistes, d'utiliser jusqu'à trois écrans, de jouer en 3D, et incluent un système plug-and-play pour vos manettes.
+
+        Grand Theft Auto V sur PC contient également Grand Theft Auto Online, avec des parties pouvant accueillir jusqu'à 30 joueurs et deux spectateurs. Toutes les améliorations existantes de gameplay et le contenu créé par Rockstar depuis le lancement de Grand Theft Auto Online seront également disponibles, y compris les Braquages et les modes Rivalité.
+
+        Les versions PC de Grand Theft Auto V et Grand Theft Auto Online incluent le mode à la première personne, qui permet aux joueurs d'explorer l'extraordinaire monde de Los Santos d'un tout nouveau point de vue.
+
+        Également dans les nouveautés : l'Éditeur Rockstar, un outil créatif très complet pour enregistrer, modifier et partager vos vidéos de gameplay de Grand Theft Auto V et Grand Theft Auto Online. Le mode Réalisateur permet aux joueurs de créer leur propre mise en scène en se servant des protagonistes du mode Histoire, de piétons ou même d'animaux. Vous pouvez manipuler la caméra comme bon vous semble et ajouter des effets spéciaux incluant des scènes en accéléré ou au ralenti et différents filtres de caméra. Les joueurs peuvent ajouter des musiques en se servant des chansons diffusées sur les stations de radio de GTAV et contrôler l'intensité de la bande-originale du jeu. Les vidéos terminées peuvent être publiées directement depuis l'Éditeur Rockstar sur YouTube ou sur le Rockstar Games Social Club.
+
+        Les artistes The Alchemist et Oh No sont de retour en tant qu'hôtes d'une nouvelle station de radio, The Lab FM. Cette station propose de nouvelles chansons exclusives produites par le duo, basées sur et inspirées par la bande-originale du jeu. Des artistes comme Earl Sweatshirt, Freddie Gibbs, Little Dragon, Killer Mike, Sam Herring de Future Islands et plus encore ont participé à l'élaboration de cette bande-son. Les joueurs peuvent aussi découvrir Los Santos et Blaine County tout en écoutant leur propre musique via Radio Perso, une station de radio qui permet d'héberger des musiques choisies par le joueur.
+      ",
+      "createdAt" => new DateTimeImmutable(sprintf("-%d days", rand(1, 365))),
+      "nbPictures" => 7,
+      "platforms" => ["playstation", "xbox", "pc"]
+    ];
+
+    // Black Desert
+    $datas[] = [
+      "name" => "Black Desert",
+      "description" => "
+        Un monde hyper réaliste : LE MEILLEUR MMORPG DU MONDE
+        Black Desert est un jeu qui teste les limites du genre MMORPG en implémentant des graphismes et une bande son remastérisés. Profitez de contenus de jeu variés comme les guerres de conquête/géoconflits ou des contenus de profession tels que l'exploration, le commerce, la pêche, le dressage, l'alchimie, la cuisine, la récolte, la chasse et bien plus ! Faites l'expérience de tout cela dans un monde ouvert, vaste et somptueux.
+        Voici Black Desert, le jeu de rôle MMO nouvelle génération.
+        
+        Commencez votre aventure, réalisez vos rêves !
+        
+        GRAPHISMES
+        La version remastérisée garantit une qualité graphique optimale
+        Un MMORPG à monde ouvert en constante expansion, créé par le moteur de jeu exclusif de Pearl Abyss. Black Desert est un jeu aux décors splendides avec des environnements hyper réalistes et des détails sophistiqués. Immergez-vous dans un univers né d'une technologie graphique de pointe et préparez-vous pour des aventures inoubliables.
+        
+        MONDE OUVERT
+        Des contenus de jeu hors-combat variés
+        Vous n'êtes pas du genre bagarreur ? De nombreuses autres activités n'attendent que vous ! Culture, commerce, dressage de cheval, pêche, navigation, transformation, cuisine... Amusez-vous à découvrir toutes ces professions !
+        
+        CONNAISSANCE
+        Contenu de jeu basé sur la connaissance
+        La connaissance, c'est le pouvoir ! Plus vous en apprendrez, mieux ce sera. L'acquisition de connaissances par le biais de combats, d'explorations et de conversations avec les PNJ vous confèrera de nombreux avantages sur le champ de bataille.
+        
+        COMBAT
+        Une explosion d'action
+        Faites l'expérience de batailles dynamiques aux graphismes plus vrais que nature. Profitez d'un gameplay palpitant et ultra réaliste grâce à des mécaniques de combats basées sur des enchaînements de compétences spectaculaires.
+        
+        GÉOCONFLIT & GUERRE DE CONQUÊTE
+        Contenu JcJ à grande échelle
+        Black Desert vous propose des contenus JcJ auxquels vous pouvez participer avec les membres de votre guilde tels que la guerre de conquête et le géoconflit. Remportez la victoire en unissant vos forces !
+        
+        PERSONNALISATION
+        Découvrez votre véritable nature
+        La personnalisation vous permet de créer votre propre look. Créez un personnage unique en vous amusant à ajuster de nombreux paramètres d'apparence comme la taille, la forme du visage, la couleur des yeux, les cheveux, la couleur de la peau et bien plus encore !
+      ",
+      "createdAt" => new DateTimeImmutable(sprintf("-%d days", rand(1, 365))),
+      "nbPictures" => 10,
+      "platforms" => ["pc"]
     ];
 
     return $datas;
