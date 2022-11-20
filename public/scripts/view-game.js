@@ -16,25 +16,53 @@ if (inputFilePicture && btnAddPicture) {
   });
 }
 
-/** @type {HTMLImageElement} */
-const pictureHeaderSelected = document.querySelector('div.game-header-picture-selected img');
-/** @type {NodeListOf<HTMLImageElement>} */
-const picturesMinHeader = document.querySelectorAll('div.game-header-pictures-min img');
+// CAROUSEL FOR IMAGES
+/** @type {HTMLDivElement} */
+const headerPictures = document.querySelector('aside.game-header-pictures');
 
-picturesMinHeader.forEach((img) => {
+if (headerPictures) {
+  let indexImageSelected = 0;
+  const nextImageInCard = () => {
+    picturesMinHeader[indexImageSelected].classList.remove('active');
+    indexImageSelected = indexImageSelected < picturesMinHeader.length - 1 ? indexImageSelected + 1 : 0;
+    picturesMinHeader[indexImageSelected].classList.add('active');
+    pictureHeaderSelected.src = picturesMinHeader[indexImageSelected].src;
+  }
+  let timeoutImagesNext = setInterval(nextImageInCard, 3000);
 
-  img.addEventListener('click',
-    (event) => {
-    picturesMinHeader.forEach((img) => {
-      img.classList.remove('active');
-    });
-    /** @type {HTMLImageElement} */
-    const imgSelected = event.currentTarget;
-    imgSelected.classList.add('active');
-    pictureHeaderSelected.src = imgSelected.src;
-    btnDeletePicture.href = btnDeletePicture.dataset.prototype.replace('idPicture', imgSelected.dataset.picture);
+  headerPictures.addEventListener('mouseover', () => {
+    clearInterval(timeoutImagesNext);
   });
-});
+
+  headerPictures.addEventListener('mouseout', () => {
+    timeoutImagesNext = setInterval(nextImageInCard, 3000);
+  });
+
+  /** @type {HTMLImageElement} */
+  const pictureHeaderSelected = document.querySelector('div.game-header-picture-selected img');
+  /** @type {NodeListOf<HTMLImageElement>} */
+  const picturesMinHeader = document.querySelectorAll('div.game-header-pictures-min img');
+
+  picturesMinHeader.forEach((img, idx) => {
+    img.addEventListener('click',
+      (event) => {
+        picturesMinHeader.forEach((img) => {
+          img.classList.remove('active');
+        });
+        /** @type {HTMLImageElement} */
+        const imgSelected = event.currentTarget;
+        imgSelected.classList.add('active');
+        pictureHeaderSelected.src = imgSelected.src;
+        indexImageSelected = idx;
+        if (btnDeletePicture) {
+          btnDeletePicture.href = btnDeletePicture
+            .dataset
+            .prototype
+            .replace('idPicture', imgSelected.dataset.picture);
+        }
+      });
+  });
+}
 
 // EDIT GAME (Name, Platforms, Description)
 /** @type {HTMLDivElement} */

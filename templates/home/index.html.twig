@@ -23,7 +23,9 @@
         <a data-link class="hidden" href="{{ path('app_game_view', {name: game.name}) }}"></a>
         <div class="card-img">
           {% if game.pictures.count > 0 %}
-            <img src="{{ asset(game.pictures[0].path) }}" alt="image game {{ game.name }}" />
+            {% for picture in game.pictures %}
+              <img data-picture class="{{ loop.index-1 > 0 ? 'hidden' : '' }}" src="{{ asset(picture.path) }}" alt="image game {{ game.name }}" />
+            {% endfor %}
           {% else %}
             <img src="{{ asset('images/ui/img-not-found.png') }}" alt="image not found" />
           {% endif %}
@@ -36,15 +38,15 @@
             {{ game.description|nl2br }}
           </div>
           <div class="card-body-footer">
-            <small>{{ game.createdAt|date('') }} par {{ game.author.pseudo }}</small>
+            <small>{{ game.createdAt|date('d/m/Y') }} par {{ game.author.pseudo }}</small>
             <small>{{ game.comments.count }} commentaires</small>
           </div>
         </div>
       </article>
+      {% endfor %}
     </div>
     <div class="home-footer">
       PAGINATOR
     </div>
-    {% endfor %}
   </div>
 {% endblock %}
