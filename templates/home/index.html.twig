@@ -17,6 +17,7 @@
       {{ form_row(formSearch.search) }}
       {{ form_end(formSearch) }}
     </div>
+    {% if games|length > 0 %}
     <div class="home-body">
       {% for game in games %}
       <article class="card">
@@ -61,6 +62,11 @@
       </article>
       {% endfor %}
     </div>
+    {% else %}
+      <div class="d-flex flex-row justify-content-center p-30">
+        Aucun jeu n'a été trouvé
+      </div>
+    {% endif %}
     <div class="home-footer">
       PAGINATOR
     </div>
