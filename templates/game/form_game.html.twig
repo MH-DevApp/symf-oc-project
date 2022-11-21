@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Game{% endblock %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="{{ asset('styles/form.css') }}" type="text/css" />
+{% endblock %}
+
+{% block body %}
+  {{ form_start(form) }}
+    <h1 class="mb-20">NOUVEAU JEU</h1>
+    <div class="card">
+      {{ form_row(form.name) }}
+      {{ form_row(form.description) }}
+      {% if form.platformsSelected.count > 0 %}
+        <div class="card-item">
+          {{ form_label(form.platformsSelected) }}
+          <div class="d-flex flex-row justify-content-center align-items-center g-10">
+            {% for platform in form.platformsSelected %}
+              {{ form_row(platform, { row_attr: { class: 'card-option' } }) }}
+            {% endfor %}
+          </div>
+          {{ form_errors(form.platformsSelected) }}
+        </div>
+      {% endif %}
+      {{ form_rest(form) }}
+      <button class="btn btn-primary" type="submit">
+        Ajouter
+      </button>
+    </div>
+  {{ form_end(form) }}
+{% endblock %}

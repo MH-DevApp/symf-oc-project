@@ -13,19 +13,23 @@
 .btn-primary {
     background-color: var(--primary);
     color: var(--ligth);
+    border-color: var(--primary);
 }
 
 .btn-secondary {
     background-color: var(--primary-1);
     color: var(--ligth);
+    border-color: var(--primary-1);
 }
 
 .btn-light {
     background-color: var(--ligth);
     color: var(--primary);
+    border-color: var(--ligth);
 }
 
 .btn-danger {
     background-color: var(--red-1);
     color: var(--ligth);
+    border-color: var(--red-1);
 }

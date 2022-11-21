@@ -2,15 +2,63 @@
 
 namespace App\Controller;
 
+use App\Entity\Game;
+use App\Form\SearchGameType;
+use App\Repository\GameRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
+  /**
+   * @throws NonUniqueResultException
+   * @throws NoResultException
+   */
   #[Route('/', name: 'app_home')]
-  public function index(): Response
+  public function index(
+    Request $request,
+    GameRepository $gameRepository
+  ): Response
   {
-    return $this->render('home/index.html.twig', []);
+    $limit = 12;
+    $totalGame = $gameRepository->getCountGames();
+    $maxPage = $totalGame > 0 && round($totalGame/$limit, 0, PHP_ROUND_HALF_UP) > 0 ? round($totalGame/$limit, 0, PHP_ROUND_HALF_DOWN) + 1 : 1;
+    $currentPage = intval($request->query->get('page')) > 0 ? intval($request->query->get('page')) : 1;
+    $offset = $currentPage < $maxPage ? ($currentPage-1)*$limit : ($maxPage-1)*$limit;
+    $searchValue = '';
+
+    $formSearch = $this->createForm(SearchGameType::class);
+    $formSearch->handleRequest($request);
+
+    if ($formSearch->isSubmitted() && $formSearch->isValid()) {
+      $searchValue = $formSearch->get('search')->getData() ?? '';
+    }
+
+    /** @var Collection<Game> $games */
+    $games = $gameRepository->getGamesByName(
+      $searchValue,
+      $this->isGranted('ROLE_ADMIN'),
+      $limit,
+      $offset
+    );
+
+    /*$games = $gameRepository->getGamesByName(
+      $this->isGranted('ROLE_ADMIN') ? ['name' => $searchValue] : ['name' => $searchValue, 'isPublished' => true],
+      ['createdAt' => 'DESC'],
+      $limit,
+      $offset
+    );*/
+
+    return $this->render('home/index.html.twig', [
+      'games' => $games,
+      'currentPage' => $currentPage,
+      'maxPage' => $maxPage,
+      'formSearch' => $formSearch->createView()
+    ]);
   }
 }

@@ -4,7 +4,10 @@ namespace App\Repository;
 
 use App\Entity\Platform;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Uid\UuidV6;
 
 /**
  * @extends ServiceEntityRepository<Platform>
@@ -19,6 +22,20 @@ class PlatformRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Platform::class);
+    }
+
+    public function findByIds($ids): array {
+      return $this->createQueryBuilder('p')
+        ->select('p')
+        ->where('p.id IN (:id)')
+        ->setParameter('id', array_map(
+          function ($id) {
+            return Uuidv6::fromString($id)->toBinary();
+            }, $ids
+          )
+        )
+        ->getQuery()
+        ->getResult();
     }
 
     public function save(Platform $entity, bool $flush = false): void

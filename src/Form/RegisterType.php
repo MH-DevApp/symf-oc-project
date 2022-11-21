@@ -65,8 +65,8 @@ class RegisterType extends AbstractType
               ],
               'constraints' => [
                 new Regex([
-                  'pattern' => '/^[a-zA-Z]+$/',
-                  'message' => 'Les caractères autre que [a => z] ou [A => Z] ne sont pas autorisés.'
+                  'pattern' => '/^[a-zA-Z0-9]+$/',
+                  'message' => 'Les caractères autre que [a => z], [A => Z], [0 => 9] ne sont pas autorisés.'
                 ])
               ]
             ])
@@ -78,7 +78,7 @@ class RegisterType extends AbstractType
         $resolver->setDefaults([
           'data_class' => User::class,
           'attr' => [
-            'class' => 'form-auth'
+            'class' => 'form'
           ]
         ]);
     }

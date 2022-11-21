@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Game;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -16,28 +18,82 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class GameRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Game::class);
+  public function __construct(ManagerRegistry $registry)
+  {
+    parent::__construct($registry, Game::class);
+  }
+
+  public function save(Game $entity, bool $flush = false): void
+  {
+    $this->getEntityManager()->persist($entity);
+
+    if ($flush) {
+        $this->getEntityManager()->flush();
+    }
+  }
+
+  public function remove(Game $entity, bool $flush = false): void
+  {
+    $this->getEntityManager()->remove($entity);
+
+    if ($flush) {
+        $this->getEntityManager()->flush();
+    }
+  }
+
+  /**
+   * @throws NonUniqueResultException
+   * @throws NoResultException
+   */
+  public function getCountGames(): int {
+    return $this->createQueryBuilder('g')
+      ->select('count(g.id)')
+      ->getQuery()
+      ->getSingleScalarResult();
+  }
+
+  public function getGamesByName(
+    string $value,
+    bool $isPublished,
+    int $limit,
+    int $offset)
+  : array {
+    $qb = $this->createQueryBuilder('g')
+      ->where('g.name LIKE :name')
+      ->setParameter('name', $value.'%');
+
+    if (!$isPublished) {
+      $qb = $qb->andWhere('g.isPublished = true');
     }
 
-    public function save(Game $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->persist($entity);
+    $gamesStartName = $qb
+      ->orderBy('g.createdAt', 'DESC')
+      ->setFirstResult($offset)
+      ->setMaxResults($limit)
+      ->getQuery()
+      ->getResult();
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
+    $qb = $this->createQueryBuilder('g')
+      ->where('g.name NOT IN (:games)')
+      ->andwhere('g.name LIKE :name')
+      ->setParameters([
+        'name' => '%'.$value.'%',
+        'games' => array_map(function($g) { return $g->getName(); }, $gamesStartName)
+      ]);
+
+    if (!$isPublished) {
+      $qb = $qb->andWhere('g.isPublished = true');
     }
 
-    public function remove(Game $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
+    $gamesContainsName = $qb
+      ->orderBy('g.createdAt', 'DESC')
+      ->setFirstResult($offset)
+      ->setMaxResults($limit-count($gamesStartName))
+      ->getQuery()
+      ->getResult();
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
+    return [...$gamesStartName, ...$gamesContainsName];
+  }
 
 //    /**
 //     * @return Game[] Returns an array of Game objects

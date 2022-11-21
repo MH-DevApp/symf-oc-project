@@ -3,11 +3,11 @@
 {% block title %}Se connecter{% endblock %}
 
 {% block stylesheets %}
-  <link rel="stylesheet" href="{{ asset('styles/auth.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('styles/form.css') }}" type="text/css" />
 {% endblock %}
 
 {% block body %}
-  <form class="form-auth" method="post">
+  <form class="form" method="post">
     <h1 class="mb-20">CONNEXION</h1>
     <div class="card">
       {% if error %}

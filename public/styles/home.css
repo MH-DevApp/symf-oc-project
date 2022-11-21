@@ -1,0 +1,117 @@
+.home {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    width: 80%;
+    padding: 20px;
+}
+
+.home-header,
+.home-header-search,
+.home-body,
+.home-footer,
+form {
+    width: 100%;
+}
+
+.home-header {
+    display: flex;
+    padding: 20px;
+}
+
+.home-header-search input {
+    width: 100%;
+}
+
+.home-body {
+    display: grid;
+    grid-template-columns: repeat(3, 30%);
+    grid-template-rows: 1fr;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.home-body article.card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    cursor: pointer;
+    box-shadow: var(--box-shadow);
+    border-radius: 10px;
+}
+
+.home-body article.card:hover {
+    opacity: 0.95;
+}
+
+.home-body article .card-img {
+    display: flex;
+    height: 300px;
+    background-color: var(--gray);
+    border-radius: 10px 10px 0 0;
+    position: relative;
+}
+
+.home-body article .card-img img {
+    object-fit: cover;
+    width: 100%;
+    border-radius: 10px 10px 0 0;
+}
+
+.home-body article .card-rating {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(255, 255, 255, 0.22);
+    border-radius: 3px;
+    padding: 10px 15px;
+}
+
+.home-body article .card-rating.hidden {
+    display: none;
+}
+
+.home-body article .card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.home-body article .card-body .card-body-title {
+    padding: 20px 0;
+    border: 2px solid var(--gray-1);
+    background-color: rgba(34, 34, 75, 0.82);
+    color: var(--ligth);
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    height: 80px;
+}
+
+.home-body article .card-body .card-body-content {
+    display: flex;
+    text-align: justify;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-height: 150px;
+    padding: 10px;
+    border: 2px solid var(--gray-1);
+    border-bottom: none;
+    border-top: none;
+}
+
+.home-body article .card-body .card-body-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 10px;
+    border: 2px solid var(--gray-1);
+    background-color: rgba(34, 34, 75, 0.82);
+    color: var(--ligth);
+    border-radius: 0 0 10px 10px;
+}
