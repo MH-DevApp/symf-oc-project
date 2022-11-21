@@ -11,7 +11,9 @@ if (articles) {
         link.click();
       }
     });
-    // TIME NEXT IMAGES IN CARD ON MOUSE OVER
+    // TIME NEXT IMAGES IN CARD AND SHOW RATING ON MOUSE OVER
+    /** @type {HTMLDivElement} */
+    const cardRating = article.querySelector('.card-img .card-rating');
     let timeoutImagesCard = null;
     /** @type {NodeListOf<HTMLImageElement>} */
     const images = article.querySelectorAll('.card-img img[data-picture]');
@@ -23,10 +25,16 @@ if (articles) {
     }
     article.addEventListener('mouseover', () => {
       timeoutImagesCard = setInterval(nextImageInCard, 1000);
+      if (cardRating) {
+        cardRating.classList.remove('hidden');
+      }
     });
 
     article.addEventListener('mouseout', () => {
       clearInterval(timeoutImagesCard);
+      if (cardRating) {
+        cardRating.classList.add('hidden');
+      }
     });
   });
 }

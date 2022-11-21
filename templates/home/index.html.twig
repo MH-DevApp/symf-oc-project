@@ -29,6 +29,22 @@
           {% else %}
             <img src="{{ asset('images/ui/img-not-found.png') }}" alt="image not found" />
           {% endif %}
+          {# Moyennes des votes #}
+          <div class="card-rating hidden">
+            {% set ratingScore = game.score %}
+            {% if ratingScore %}
+              {% for i in range(1, 5) %}
+                <img
+                  style="width: 20px;"
+                  src="{{ asset('images/ui/star_' ~ (i <= ratingScore|round(0, 'floor') ? 'full' : 'empty') ~ '.png') }}"
+                  alt="image star {{ i <= ratingScore|round(0, 'floor') ? 'full' : 'empty' }}">
+              {% endfor %}
+            {% else %}
+              {% for i in range(1, 5) %}
+                <img style="width: 20px" src="{{ asset('images/ui/star_empty.png') }}" alt="icon start">
+              {% endfor %}
+            {% endif %}
+          </div>
         </div>
         <div class="card-body">
           <div class="card-body-title">

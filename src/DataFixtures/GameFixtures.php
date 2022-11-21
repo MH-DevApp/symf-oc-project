@@ -25,39 +25,41 @@ class GameFixtures extends Fixture implements DependentFixtureInterface
       $author = array_filter($usersDatas, function($u) { return $u->getPseudo() === "Admin"; });
 
       try {
-        $gamesData = MockDataGame::getDatasGame();
-        foreach ($gamesData as $gameData) {
+        for ($n=0; $n<5; $n++) {
+          $gamesData = MockDataGame::getDatasGame();
+          foreach ($gamesData as $gameData) {
 
-          $game = (new Game())
-            ->setAuthor($author[0])
-            ->setIsPublished(true)
-            ->setName($gameData['name'])
-            ->setDescription($gameData["description"])
-            ->setCreatedAt($gameData['createdAt'])
-          ;
-
-          // Platforms
-          foreach ($platformsDatas as $platform) {
-            if (in_array($platform->getName(), $gameData['platforms'])) {
-              $game->addPlatform($platform);
-            }
-          }
-
-          // Picture
-          for ($i=0; $i<$gameData['nbPictures']; $i++) {
-            $path = FileUtils::moveFileToDir(
-              'images/games',
-              $gameData['name'].'/img'.$i.'.png'
-            );
-            $picture = (new Picture())
+            $game = (new Game())
+              ->setAuthor($author[0])
+              ->setIsPublished(true)
+              ->setName($gameData['name'].'-'.$n)
+              ->setDescription($gameData["description"])
               ->setCreatedAt($gameData['createdAt'])
-              ->setPath($path);
+            ;
 
-            $game->addPicture($picture);
+            // Platforms
+            foreach ($platformsDatas as $platform) {
+              if (in_array($platform->getName(), $gameData['platforms'])) {
+                $game->addPlatform($platform);
+              }
+            }
+
+            // Picture
+            for ($i=0; $i<$gameData['nbPictures']; $i++) {
+              $path = FileUtils::moveFileToDir(
+                'images/games',
+                $gameData['name'].'/img'.$i.'.png'
+              );
+              $picture = (new Picture())
+                ->setCreatedAt($gameData['createdAt'])
+                ->setPath($path);
+
+              $game->addPicture($picture);
+            }
+
+            $manager->persist($game);
+            $manager->flush();
           }
-
-          $manager->persist($game);
-          $manager->flush();
         }
       } catch (Exception $e) {
         dump($e);
