@@ -13,10 +13,49 @@
 {% block body %}
   <div class="home flex-fill">
     <div class="home-header">
-      {{ form_start(formSearch) }}
-      {{ form_row(formSearch.search) }}
+      {{ form_start(formSearch, {attr: { action: path('app_home', {page: 1})}}) }}
+      {{ form_row(formSearch.search, {attr: { value: search ?? '' }}) }}
       {{ form_end(formSearch) }}
     </div>
+    {% if games|length > 0 %}
+      <div class="paginator">
+        {% set lastDots = false %}
+        {% if currentPage > 2 %}
+          <span>
+                <a href="{{ path('app_home') }}?page=1{{ search ? '&search='~search : '' }}">&lsaquo;&lsaquo;</a>
+              </span>
+          <span>
+                <a href="{{ path('app_home') }}?page={{ currentPage - 1 }}{{ search ? '&search='~search : '' }}">&lsaquo;</a>
+              </span>
+        {% endif %}
+        {% for i in range(1, maxPage) %}
+          {% if i < currentPage-1 and loop.index == 1 %}
+            <span class="dots">...</span>
+          {% endif %}
+          {% if (i >= currentPage-1 and i <= currentPage + 1) or (i == maxPage and i > currentPage + 1) %}
+            <span class="{{ currentPage == i ? 'active' : '' }}">
+                  {% if currentPage != i %}
+                    <a href="{{ path('app_home') }}?page={{ i }}{{ search ? '&search='~search : '' }}">{{ i }}</a>
+                  {% else %}
+                    {{ i }}
+                  {% endif %}
+                </span>
+          {% endif %}
+          {% if i > currentPage + 1 and i < maxPage and not lastDots %}
+            {% set lastDots = true %}
+            <span class="dots">...</span>
+          {% endif %}
+        {% endfor %}
+        {% if currentPage < maxPage-2 %}
+          <span>
+                <a href="{{ path('app_home') }}?page={{ currentPage + 1 }}{{ search != '' ? '&search='~search : '' }}">&rsaquo;</a>
+              </span>
+          <span>
+                <a href="{{ path('app_home') }}?page={{ maxPage }}{{ search ? '&search='~search : '' }}">&rsaquo;&rsaquo;</a>
+              </span>
+        {% endif %}
+      </div>
+    {% endif %}
     {% if games|length > 0 %}
     <div class="home-body">
       {% for game in games %}
@@ -67,8 +106,44 @@
         Aucun jeu n'a été trouvé
       </div>
     {% endif %}
-    <div class="home-footer">
-      PAGINATOR
-    </div>
   </div>
+    {% if games|length > 0 %}
+      <div class="paginator">
+        {% set lastDots = false %}
+        {% if currentPage > 2 %}
+          <span>
+                <a href="{{ path('app_home') }}?page=1{{ search ? '&search='~search : '' }}">&lsaquo;&lsaquo;</a>
+              </span>
+          <span>
+                <a href="{{ path('app_home') }}?page={{ currentPage - 1 }}{{ search ? '&search='~search : '' }}">&lsaquo;</a>
+              </span>
+        {% endif %}
+        {% for i in range(1, maxPage) %}
+          {% if i < currentPage-1 and loop.index == 1 %}
+            <span class="dots">...</span>
+          {% endif %}
+          {% if (i >= currentPage-1 and i <= currentPage + 1) or (i == maxPage and i > currentPage + 1) %}
+            <span class="{{ currentPage == i ? 'active' : '' }}">
+                  {% if currentPage != i %}
+                    <a href="{{ path('app_home') }}?page={{ i }}{{ search ? '&search='~search : '' }}">{{ i }}</a>
+                  {% else %}
+                    {{ i }}
+                  {% endif %}
+                </span>
+          {% endif %}
+          {% if i > currentPage + 1 and i < maxPage and not lastDots %}
+            {% set lastDots = true %}
+            <span class="dots">...</span>
+          {% endif %}
+        {% endfor %}
+        {% if currentPage < maxPage-2 %}
+          <span>
+                <a href="{{ path('app_home') }}?page={{ currentPage + 1 }}{{ search != '' ? '&search='~search : '' }}">&rsaquo;</a>
+              </span>
+          <span>
+                <a href="{{ path('app_home') }}?page={{ maxPage }}{{ search ? '&search='~search : '' }}">&rsaquo;&rsaquo;</a>
+              </span>
+        {% endif %}
+      </div>
+    {% endif %}
 {% endblock %}
