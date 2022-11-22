@@ -25,12 +25,8 @@ class HomeController extends AbstractController
     GameRepository $gameRepository
   ): Response
   {
-    $limit = 12;
-    $totalGame = $gameRepository->getCountGames();
-    $maxPage = $totalGame > 0 && round($totalGame/$limit, 0, PHP_ROUND_HALF_UP) > 0 ? round($totalGame/$limit, 0, PHP_ROUND_HALF_DOWN) + 1 : 1;
+    $searchValue = $request->query->get('search') && $request->query->get('search') !== '' ? $request->query->get('search') : "";
     $currentPage = intval($request->query->get('page')) > 0 ? intval($request->query->get('page')) : 1;
-    $offset = $currentPage < $maxPage ? ($currentPage-1)*$limit : ($maxPage-1)*$limit;
-    $searchValue = '';
 
     $formSearch = $this->createForm(SearchGameType::class);
     $formSearch->handleRequest($request);
@@ -38,6 +34,11 @@ class HomeController extends AbstractController
     if ($formSearch->isSubmitted() && $formSearch->isValid()) {
       $searchValue = $formSearch->get('search')->getData() ?? '';
     }
+
+    $limit = 12;
+    $totalGame = $gameRepository->getCountGames($searchValue ?? "");
+    $maxPage = $totalGame > 0 && round($totalGame/$limit, 0, PHP_ROUND_HALF_UP) > 0 ? round($totalGame/$limit, 0, PHP_ROUND_HALF_DOWN) + 1 : 1;
+    $offset = $currentPage < $maxPage ? ($currentPage-1)*$limit : ($maxPage-1)*$limit;
 
     /** @var Collection<Game> $games */
     $games = $gameRepository->getGamesByName(
@@ -47,15 +48,9 @@ class HomeController extends AbstractController
       $offset
     );
 
-    /*$games = $gameRepository->getGamesByName(
-      $this->isGranted('ROLE_ADMIN') ? ['name' => $searchValue] : ['name' => $searchValue, 'isPublished' => true],
-      ['createdAt' => 'DESC'],
-      $limit,
-      $offset
-    );*/
-
     return $this->render('home/index.html.twig', [
       'games' => $games,
+      'search' => $searchValue,
       'currentPage' => $currentPage,
       'maxPage' => $maxPage,
       'formSearch' => $formSearch->createView()
