@@ -5,13 +5,28 @@
         <a href="{{ path('app_home') }}">&lsaquo;Project OC Symf /&rsaquo;</a>
       </span>
     </div>
-    <div>
+    <div class="d-flex flex-row align-items-center g-5">
       {% if app.user %}
         {% if is_granted('ROLE_ADMIN') %}
           <a class="btn btn-danger mr-5" href="{{ path('app_home') }}">Tableau de bord Admin</a>
         {% endif %}
-        <a class="btn btn-light mr-5" href="{{ path('app_home') }}">Profil</a>
-        <a class="btn btn-light" href="{{ path('app_auth_logout') }}">Déconnexion</a>
+        <div class="profil">
+          {%- set avatarPath = app.user.picture ? app.user.picture.path : 'images/ui/img-not-found.png' -%}
+          <div class="profil-dropdown">
+            <img data-img-profil src="{{ asset(avatarPath) }}" alt="image profil" />
+            <img class="arrow-circle" src="{{ asset('images/ui/icon-chevron.png') }}" alt="chevron icon" />
+          </div>
+          <div class="profil-menu">
+            <div class="profil-menu-avatar">
+              <img src="{{ asset(avatarPath) }}" alt="image profil" />
+            </div>
+            <span class="profil-menu-pseudo">{{ app.user.pseudo }}</span>
+            <hr>
+            <a class="btn btn-primary" href="{{ path('app_profil', {page: 'infos'}) }}">Mes informations</a>
+            <a class="btn btn-primary" href="{{ path('app_profil', {page: 'ratings'}) }}">Mes avis</a>
+            <a class="btn btn-danger" href="{{ path('app_auth_logout') }}">Déconnexion</a>
+          </div>
+        </div>
       {% else %}
         <a class="btn btn-light mr-5" href="{{ path('app_auth_signin') }}">Connexion</a>
         <a class="btn btn-light" href="{{ path('app_auth_signup') }}">Inscription</a>

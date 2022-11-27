@@ -70,11 +70,11 @@ class GameController extends AbstractController
         $formPicture->handleRequest($request);
 
         if ($formPicture->isSubmitted() && $formPicture->isValid()) {
-          $folder = $this->getParameter('game.folder').'/'.$this->getParameter('game.folder.public_path');
+          $folder = $this->getParameter('public.folder').'/'.$this->getParameter('game.folder');
           $ext = $picture->getFile()->guessExtension() ?? 'bin';
           $filename = bin2hex(random_bytes(10)) . '.' . $ext;
           $picture->getFile()->move($folder, $filename);
-          $picture->setPath($this->getParameter('game.folder.public_path').'/'.$filename);
+          $picture->setPath($this->getParameter('game.folder').'/'.$filename);
           $picture->setCreatedAt(new DateTimeImmutable('now'));
 
           // UPDATE GAME AND FLUSH
@@ -235,12 +235,12 @@ class GameController extends AbstractController
     }
 
     if (file_exists(
-      $this->getParameter('game.folder').
+      $this->getParameter('public.folder').
       '/'.
       $picture->getPath()))
     {
       unlink(
-        $this->getParameter('game.folder').
+        $this->getParameter('public.folder').
         '/'.
         $picture->getPath()
       );

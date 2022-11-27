@@ -22,11 +22,11 @@
         {% set lastDots = false %}
         {% if currentPage > 2 %}
           <span>
-                <a href="{{ path('app_home') }}?page=1{{ search ? '&search='~search : '' }}">&lsaquo;&lsaquo;</a>
-              </span>
+            <a href="{{ path('app_home') }}?page=1{{ search ? '&search='~search : '' }}">&lsaquo;&lsaquo;</a>
+          </span>
           <span>
-                <a href="{{ path('app_home') }}?page={{ currentPage - 1 }}{{ search ? '&search='~search : '' }}">&lsaquo;</a>
-              </span>
+            <a href="{{ path('app_home') }}?page={{ currentPage - 1 }}{{ search ? '&search='~search : '' }}">&lsaquo;</a>
+          </span>
         {% endif %}
         {% for i in range(1, maxPage) %}
           {% if i < currentPage-1 and loop.index == 1 %}
@@ -34,12 +34,12 @@
           {% endif %}
           {% if (i >= currentPage-1 and i <= currentPage + 1) or (i == maxPage and i > currentPage + 1) %}
             <span class="{{ currentPage == i ? 'active' : '' }}">
-                  {% if currentPage != i %}
-                    <a href="{{ path('app_home') }}?page={{ i }}{{ search ? '&search='~search : '' }}">{{ i }}</a>
-                  {% else %}
-                    {{ i }}
-                  {% endif %}
-                </span>
+              {% if currentPage != i %}
+                <a href="{{ path('app_home') }}?page={{ i }}{{ search ? '&search='~search : '' }}">{{ i }}</a>
+              {% else %}
+                {{ i }}
+              {% endif %}
+            </span>
           {% endif %}
           {% if i > currentPage + 1 and i < maxPage and not lastDots %}
             {% set lastDots = true %}
@@ -48,11 +48,11 @@
         {% endfor %}
         {% if currentPage < maxPage-2 %}
           <span>
-                <a href="{{ path('app_home') }}?page={{ currentPage + 1 }}{{ search != '' ? '&search='~search : '' }}">&rsaquo;</a>
-              </span>
+            <a href="{{ path('app_home') }}?page={{ currentPage + 1 }}{{ search != '' ? '&search='~search : '' }}">&rsaquo;</a>
+          </span>
           <span>
-                <a href="{{ path('app_home') }}?page={{ maxPage }}{{ search ? '&search='~search : '' }}">&rsaquo;&rsaquo;</a>
-              </span>
+            <a href="{{ path('app_home') }}?page={{ maxPage }}{{ search ? '&search='~search : '' }}">&rsaquo;&rsaquo;</a>
+          </span>
         {% endif %}
       </div>
     {% endif %}
@@ -124,12 +124,12 @@
           {% endif %}
           {% if (i >= currentPage-1 and i <= currentPage + 1) or (i == maxPage and i > currentPage + 1) %}
             <span class="{{ currentPage == i ? 'active' : '' }}">
-                  {% if currentPage != i %}
-                    <a href="{{ path('app_home') }}?page={{ i }}{{ search ? '&search='~search : '' }}">{{ i }}</a>
-                  {% else %}
-                    {{ i }}
-                  {% endif %}
-                </span>
+              {% if currentPage != i %}
+                <a href="{{ path('app_home') }}?page={{ i }}{{ search ? '&search='~search : '' }}">{{ i }}</a>
+              {% else %}
+                {{ i }}
+              {% endif %}
+            </span>
           {% endif %}
           {% if i > currentPage + 1 and i < maxPage and not lastDots %}
             {% set lastDots = true %}
@@ -138,11 +138,11 @@
         {% endfor %}
         {% if currentPage < maxPage-2 %}
           <span>
-                <a href="{{ path('app_home') }}?page={{ currentPage + 1 }}{{ search != '' ? '&search='~search : '' }}">&rsaquo;</a>
-              </span>
+            <a href="{{ path('app_home') }}?page={{ currentPage + 1 }}{{ search != '' ? '&search='~search : '' }}">&rsaquo;</a>
+          </span>
           <span>
-                <a href="{{ path('app_home') }}?page={{ maxPage }}{{ search ? '&search='~search : '' }}">&rsaquo;&rsaquo;</a>
-              </span>
+            <a href="{{ path('app_home') }}?page={{ maxPage }}{{ search ? '&search='~search : '' }}">&rsaquo;&rsaquo;</a>
+          </span>
         {% endif %}
       </div>
     {% endif %}

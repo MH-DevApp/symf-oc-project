@@ -27,3 +27,89 @@ header nav .brand a {
 header nav .brand a:hover {
     opacity: 0.8;
 }
+
+header nav .profil {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    position: relative;
+    padding: 5px 20px;
+}
+
+header nav .profil .profil-dropdown {
+    display: flex;
+    position: relative;
+}
+
+header nav .profil .profil-dropdown img {
+    width: 50px;
+    border-radius: 50%;
+    border: 2px double var(--warning-light);
+    cursor: pointer;
+}
+
+header nav .profil .profil-dropdown img.arrow-circle {
+    position: absolute;
+    bottom: 0;
+    right: 2%;
+    rotate: -180deg;
+    background-color: var(--ligth);
+    border: none;
+    width: 15px;
+    transition: 0.2s ease-out rotate;
+}
+
+header nav .profil .profil-dropdown img.arrow-circle.active {
+    rotate: 0deg;
+}
+
+header nav .profil .profil-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    padding: 20px;
+    top: 100%;
+    right: 0;
+    width: 100%;
+    min-width: 200px;
+    box-shadow: 0 0 3px 1px #22224b;
+    background-color: var(--ligth);
+    border-radius: 3px;
+}
+
+header nav .profil .profil-menu a {
+    width: 100%;
+    margin: 2px 0;
+    text-align: center;
+    transition: opacity linear 0.2s;
+}
+
+header nav .profil .profil-menu .profil-menu-avatar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-items: center;
+    position: relative;
+    width: 80px;
+    margin: 10px;
+    border-radius: 50%;
+    border: 2px solid var(--warning-light);
+
+}
+
+header nav .profil .profil-menu .profil-menu-avatar img {
+    border-radius: 50%;
+    width: 100%;
+}
+
+header nav .profil .profil-menu .profil-menu-pseudo {
+    color: var(--warning);
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+header nav .profil .profil-menu.active {
+    display: flex;
+}
