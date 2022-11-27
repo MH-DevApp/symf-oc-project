@@ -37,8 +37,10 @@ class HomeController extends AbstractController
 
     $limit = 12;
     $totalGame = $gameRepository->getCountGames($searchValue ?? "");
-    $maxPage = $totalGame > 0 && round($totalGame/$limit, 0, PHP_ROUND_HALF_UP) > 0 ? round($totalGame/$limit, 0, PHP_ROUND_HALF_DOWN) + 1 : 1;
+    $maxPage = $totalGame > 0 && floor($totalGame/$limit) > 0 ? floor($totalGame/$limit) + 1 : 1;
     $offset = $currentPage < $maxPage ? ($currentPage-1)*$limit : ($maxPage-1)*$limit;
+
+    dump($totalGame, $maxPage, $offset, $limit, $totalGame/$limit,floor($totalGame/$limit));
 
     /** @var Collection<Game> $games */
     $games = $gameRepository->getGamesByName(
