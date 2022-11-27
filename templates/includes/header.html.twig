@@ -8,7 +8,7 @@
     <div class="d-flex flex-row align-items-center g-5">
       {% if app.user %}
         {% if is_granted('ROLE_ADMIN') %}
-          <a class="btn btn-danger mr-5" href="{{ path('app_home') }}">Tableau de bord Admin</a>
+          <a class="btn btn-danger mr-5" href="{{ path('app_admin') }}">Tableau de bord Admin</a>
         {% endif %}
         <div class="profil">
           {%- set avatarPath = app.user.picture ? app.user.picture.path : 'images/ui/img-not-found.png' -%}

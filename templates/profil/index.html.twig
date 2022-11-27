@@ -12,8 +12,8 @@
 {% endblock %}
 
 {% block body %}
-  <div class="profil">
-    <div class="profil-left">
+  <div class="panel">
+    <div class="panel-left">
       <ul>
         <li {% if page == 'infos' %}class="active"{% endif %}>
           {% if page != 'infos' %}
@@ -31,7 +31,7 @@
         </li>
       </ul>
     </div>
-    <div class="profil-right">
+    <div class="panel-right">
       {% if page == 'infos' %}
         <h1>MES INFORMATIONS</h1>
         <div class="avatar">

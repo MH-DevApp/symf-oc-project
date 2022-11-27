@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord Admin | {{ page|upper }}{% endblock %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="{{ asset('styles/admin.css') }}" type="text/css" />
+{% endblock %}
+
+{% block body %}
+  <div class="panel">
+    <div class="panel-left">
+      LEFT
+    </div>
+    <div class="panel-right">
+      RIGHT
+    </div>
+  </div>
+{% endblock %}
