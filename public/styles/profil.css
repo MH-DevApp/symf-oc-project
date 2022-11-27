@@ -1,0 +1,125 @@
+div.profil {
+  display: flex;
+  flex-direction: row;
+  flex: 1 1 auto;
+  gap: 5px;
+  padding: 20px 0;
+}
+
+div.profil .profil-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 25px;
+  max-width: 15%;
+  min-width: 150px;
+  width: 100%;
+}
+
+div.profil .profil-left ul {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+div.profil .profil-left ul li {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 5px;
+  color: var(--primary);
+  width: 100%;
+  box-shadow: 1px 1px 3px var(--primary);
+  cursor: pointer;
+  transition: background-color .3s, color .3s;
+}
+
+div.profil .profil-left ul li:hover, div.profil .profil-left ul li.active {
+  background-color: var(--primary);
+  color: var(--ligth);
+}
+
+div.profil .profil-left ul li.active {
+  cursor: default;
+}
+
+div.profil .profil-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 1 auto;
+  border-left: 2px solid var(--primary);
+}
+
+div.profil .profil-right .avatar {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  cursor: pointer;
+  margin-top: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--warning);
+}
+
+div.profil .profil-right .avatar .overlay {
+  position: absolute;
+  display: none;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  color: var(--ligth);
+  font-weight: bold;
+  background-color: rgba(0, 0, 0, 0.50);
+  border-radius: 50%;
+}
+
+div.profil .profil-right .avatar:hover .overlay {
+  display: flex;
+}
+
+div.profil .profil-right .avatar img {
+  border-radius: 50%;
+  width: 150px;
+}
+
+div.profil .profil-right ul.rating {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 80%;
+  align-self: center;
+  gap: 30px;
+  margin: 5px 0;
+  padding: 30px;
+  box-shadow: var(--box-shadow);
+  border-radius: 3px;
+  background-color: var(--primary-light);
+  color: var(--primary);
+  cursor: pointer;
+  transition: color .4s, background-color .4s;
+}
+
+div.profil .profil-right ul.rating:hover {
+  background-color: var(--primary);
+  color: var(--ligth);
+}
+
+div.profil .profil-right ul.rating li:first-child {
+  text-transform: uppercase;
+  font-size: 1.2rem;
+}
+
+div.profil .profil-right ul.rating li:nth-child(2) {
+  max-width: calc((4*40px) + (4*10px));
+  width: 100%;
+}
+
+div.profil .profil-right ul.rating li img.platform-logo {
+  height: 40px;
+  width: 40px;
+  border-radius: 10px;
+}

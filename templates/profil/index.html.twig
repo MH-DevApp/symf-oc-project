@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil | {{ app.user.pseudo }}{% endblock %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="{{ asset('styles/form.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('styles/profil.css') }}" type="text/css" />
+{% endblock %}
+
+{% block javascripts %}
+  <script src="{{ asset('scripts/profil.js') }}" type="text/javascript" defer></script>
+{% endblock %}
+
+{% block body %}
+  <div class="profil">
+    <div class="profil-left">
+      <ul>
+        <li {% if page == 'infos' %}class="active"{% endif %}>
+          {% if page != 'infos' %}
+            <a href="{{ path('app_profil', {page: 'infos'}) }}">Mes informations</a>
+          {% else %}
+            Mes informations
+          {% endif %}
+        </li>
+        <li {% if page == 'ratings' %}class="active"{% endif %}>
+          {% if page != 'ratings' %}
+            <a href="{{ path('app_profil', {page: 'ratings'}) }}">Mes avis</a>
+          {% else %}
+            Mes avis
+          {% endif %}
+        </li>
+      </ul>
+    </div>
+    <div class="profil-right">
+      {% if page == 'infos' %}
+        <h1>MES INFORMATIONS</h1>
+        <div class="avatar">
+          <img
+            src="{{ asset(app.user.picture ?
+              app.user.picture.path :
+              'images/ui/img-not-found.png')
+            }}"
+            alt="image profil user" />
+          <div class="overlay">Modifier</div>
+          {{ form(formAvatar) }}
+        </div>
+        {{ form_start(formUser, {attr: {class: formUser.vars.attr.class ~ ' mt-5'}}) }}
+        <div class="card">
+          {{ form_rest(formUser) }}
+          <button type="submit" class="btn btn-primary mt-10">Enregistrer</button>
+        </div>
+        {{ form_end(formUser) }}
+      {% elseif page == 'ratings' %}
+        <h1>MES AVIS</h1>
+        {% if ratings|length %}
+          {% for rating in ratings %}
+            <ul class="rating">
+              <li class="d-flex flex-row align-items-center justify-content-center flex-fill">{{ rating.game.name }}</li>
+              <li class="d-flex flex-row justify-content-center align-items-center g-5">
+                {% for platform in rating.game.platforms %}
+                  <img class="platform-logo" src="{{ asset(platform.picture.path) }}" alt="icon platform {{ platform.name }}" />
+                {% endfor %}
+              </li>
+              <li class="d-flex flex-column justify-content-center align-items-center">
+                <span>Votre note</span>
+                <span>
+                  {% for i in range(1, 5) %}
+                    {% if i <= rating.score %}
+                      <img style="width: 20px;" src="{{ asset('images/ui/star_full.png') }}" alt="icon star fully" />
+                    {% else %}
+                      <img style="width: 20px;" src="{{ asset('images/ui/star_empty.png') }}" alt="icon star fully" />
+                    {% endif %}
+                  {% endfor %}
+                </span>
+              </li>
+              <li class="d-flex flex-column justify-content-center align-items-center">
+                <span>Note global</span>
+                <span>
+                  {% for i in range(1, 5) %}
+                    {% if i <= rating.game.score %}
+                      <img style="width: 20px;" src="{{ asset('images/ui/star_full.png') }}" alt="icon star fully" />
+                    {% else %}
+                      <img style="width: 20px;" src="{{ asset('images/ui/star_empty.png') }}" alt="icon star fully" />
+                    {% endif %}
+                  {% endfor %}
+                </span>
+              </li>
+              <li class="hidden"><a data-link-game href="{{ path('app_game_view', {tab: 'comments', name: rating.game.name}) }}"></a></li>
+            </ul>
+          {% endfor %}
+        {% else %}
+            <span class="mt-30">Vous n'avez exprimé aucun avis pour un jeu.</span>
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

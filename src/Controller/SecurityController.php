@@ -32,7 +32,7 @@ class SecurityController extends AbstractController
     return $this->render('auth/signin.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
   }
 
-  #[Route('/singup', name: 'app_auth_signup')]
+  #[Route('/signup', name: 'app_auth_signup')]
   public function signup(
     Request $request,
     UserPasswordHasherInterface $passwordHasher,
@@ -51,7 +51,7 @@ class SecurityController extends AbstractController
     if ($form->isSubmitted() && $form->isValid()) {
       if (!$em->getRepository(User::class)->findOneBy(['pseudo' => $user->getPseudo()])) {
         $user->setCreatedAt(new \DateTimeImmutable("now"));
-        $hash = $passwordHasher->hashPassword($user, $user->getPassword());
+        $hash = $passwordHasher->hashPassword($user, $form->get('plaintPassword')->getData());
         $user->setPassword($hash);
 
         $em->persist($user);

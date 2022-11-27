@@ -1,55 +1,56 @@
 .form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100%;
-    color: var(--primary);
-    padding: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  color: var(--primary);
+  padding: 5%;
 }
 
 .card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    row-gap: 10px;
-    box-shadow: 1px 1px 5px var(--primary);
-    border-radius: 5px;
-    max-width: 600px;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  row-gap: 10px;
+  box-shadow: 1px 1px 5px var(--primary);
+  border-radius: 5px;
+  max-width: 600px;
+  width: 100%;
 }
 
 .card .card-item {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 20px;
 }
 
 .card .card-item label {
-    font-weight: 600;
+  font-weight: 600;
 }
 
 .card .card-item textarea {
-    height: 300px;
-    resize: none;
+  height: 300px;
+  resize: none;
 }
 
 .card .card-item input[type=file] {
-    align-self: center;
-    border: none;
+  align-self: center;
+  border: none;
 }
 
 .card .card-item .card-option {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .card .card-item .card-option label {
-    font-weight: normal;
-    margin-right: 2px;
+  font-weight: normal;
+  margin-right: 2px;
 }
 
 .card .card-item .card-option label:first-letter {
-    text-transform: capitalize;
+  text-transform: capitalize;
 }
