@@ -1,20 +1,5 @@
-/** @type {NodeListOf<HTMLLIElement>} */
-const listOfRowsMenu = document.querySelectorAll('.profil .profil-left ul li');
-
-if (listOfRowsMenu.length) {
-  listOfRowsMenu.forEach((row) => {
-    /** @type {HTMLAnchorElement} */
-    const link = row.querySelector('a');
-    if (link) {
-      row.addEventListener('click', () => {
-        link.click();
-      });
-    }
-  });
-}
-
 /** @type {NodeListOf<HTMLUListElement>} */
-const ratingsContainer = document.querySelectorAll('.profil .profil-right ul.rating');
+const ratingsContainer = document.querySelectorAll('.panel .panel-right ul.rating');
 
 if (ratingsContainer.length) {
   ratingsContainer.forEach((ratingContainer) => {
@@ -30,7 +15,7 @@ if (ratingsContainer.length) {
 const avatarForm = document.querySelector('form[name=picture]');
 if (avatarForm) {
   /** @type {HTMLDivElement} */
-  const avatar = document.querySelector('.profil-right .avatar');
+  const avatar = document.querySelector('.panel-right .avatar');
   /** @type {HTMLInputElement} */
   const inputFile = avatarForm.querySelector('input#picture_file');
   avatar.addEventListener('click', () => {

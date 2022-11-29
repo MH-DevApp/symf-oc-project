@@ -1,0 +1,60 @@
+div.panel {
+  display: flex;
+  flex-direction: row;
+  flex: 1 1 auto;
+  gap: 5px;
+  padding: 20px 0;
+}
+
+div.panel .panel-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 25px;
+  max-width: 15%;
+  min-width: 150px;
+  width: 100%;
+}
+
+div.panel .panel-left ul {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+div.panel .panel-left ul li {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 5px;
+  color: var(--primary);
+  width: 100%;
+  box-shadow: 1px 1px 3px var(--primary);
+  cursor: pointer;
+  transition: background-color .3s, color .3s;
+}
+
+div.panel .panel-left ul li:hover, div.panel .panel-left ul li.active {
+  background-color: var(--primary);
+  color: var(--ligth);
+}
+
+div.panel .panel-left ul li.active {
+  cursor: default;
+}
+
+div.panel .panel-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 1 auto;
+  border-left: 2px solid var(--primary);
+}
+
+div.panel .panel-right div.table {
+  display: flex;
+  flex-direction: column;
+}

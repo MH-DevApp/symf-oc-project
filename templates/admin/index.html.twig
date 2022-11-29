@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord Admin | {{ page|upper }}{% endblock %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="{{ asset('styles/admin.css') }}" type="text/css" />
+{% endblock %}
+
+{% block javascripts %}
+  <script src="{{ asset('scripts/menu.js') }}" type="text/javascript" defer></script>
+  <script src="{{ asset('scripts/admin.js') }}" type="text/javascript" defer></script>
+{% endblock %}
+
+{% block body %}
+  <div class="panel">
+    <div class="panel-left">
+      <ul>
+        <li {% if page == 'users' %}class="active"{% endif %}>
+          {% if page != 'users' %}
+            <a href="{{ path('app_admin', {page: 'users'}) }}">Utilisateurs</a>
+          {% else %}
+            Utilisateurs
+          {% endif %}
+        </li>
+        <li {% if page == 'games' %}class="active"{% endif %}>
+          {% if page != 'games' %}
+            <a href="{{ path('app_admin', {page: 'games'}) }}">Jeux</a>
+          {% else %}
+            Jeux
+          {% endif %}
+        </li>
+      </ul>
+    </div>
+    <div class="panel-right">
+      {% if users is defined and users|length %}
+        {% for user in users %}
+          <div class="users">
+            <ul {% if user == app.user %} class="active"{% endif %}>
+              <li>
+                {% if user.picture %}
+                  <img src="{{ asset(user.picture.path) }}" alt="avatar of user {{ user.pseudo }}" />
+                {% else %}
+                  <img src="{{ asset('images/ui/img-not-found.png') }}" alt="avatar not found to {{ user.pseudo }}" />
+                {% endif %}
+              </li>
+              <li class="flex-fill">{{ user.pseudo }}</li>
+              <li class="flex-fill">{{ user.email }}</li>
+              <li>
+                <span>Créé le</span>
+                <span>{{ user.createdAt|date('d/m/Y') }}</span>
+              </li>
+              <li>
+                <span>Nombre d'avis</span>
+                <span>{{ user.comments.count }}</span>
+              </li>
+              {% if user != app.user %}
+                <li class="{{ user.isActive ? 'user-active' : 'user-inactive' }}">
+                  <a href="{{ path('app_admin_user_toggle_active', {idUser: user.id}) }}">
+                    {{ user.isActive ? 'Actif' : 'Inactif' }}
+                  </a>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
+        {% endfor %}
+      {% elseif games is defined and games|length %}
+        {% for game in games %}
+          <div class="games">
+            <ul data-target>
+              <li>
+                {% if game.pictures|length %}
+                  <img src="{{ asset(game.pictures[0].path) }}" alt="first picture of game {{ game.name }}" />
+                {% else %}
+                  <img src="{{ asset('images/ui/img-not-found.png') }}" alt="first picture not found to {{ game.name }}" />
+                {% endif %}
+              </li>
+              <li class="flex-fill">{{ game.name }}</li>
+              <li>
+                <span>Ajouté par</span>
+                <span>{{ game.author.pseudo }}</span>
+              </li>
+              <li>
+                <span>Ajouté le</span>
+                <span>{{ game.createdAt|date('d/m/Y') }}</span>
+              </li>
+              <li>
+                <span>Score ({{ game.comments.count }})</span>
+                <span>
+                  {% for i in range(1, 5) %}
+                    {% if i <= game.score %}
+                      <img class="star" src="{{ asset('images/ui/star_full.png') }}" alt="star fully {{ i }}" />
+                    {% else %}
+                      <img class="star" src="{{ asset('images/ui/star_empty.png') }}" alt="star empty {{ i }}" />
+                    {% endif %}
+                  {% endfor %}
+                </span>
+              </li>
+              <li class="{{ game.isPublished ? 'game-active' : 'game-inactive' }}">
+                {{ game.isPublished ? 'Publié' : 'Non publié' }}
+              </li>
+            </ul>
+            <a data-view-game class="hidden" href="{{ path('app_game_view', {name: game.name}) }}"></a>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

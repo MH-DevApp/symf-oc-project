@@ -1,0 +1,75 @@
+.users,
+.games {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 0 20px;
+}
+
+.users ul,
+.games ul {
+  display: flex;
+  flex-direction: row;
+  max-width: 1000px;
+  min-width: 700px;
+  width: 100%;
+  padding: 20px;
+  gap: 10px;
+  background-color: var(--primary-light);
+  align-items: center;
+  border-radius: 5px;
+}
+
+.games ul:hover {
+  background-color: var(--primary);
+  color: var(--ligth);
+  cursor: pointer;
+}
+
+.users ul.active,
+.games ul.active {
+  background-color: var(--success-light);
+}
+
+.users ul li,
+.games ul li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.users ul li.user-active, .users ul li.user-inactive,
+.games ul li.game-active, .games ul li.game-inactive {
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.users ul li.user-active,
+.games ul li.game-active {
+  background-color: var(--success-light);
+  color: var(--primary);
+}
+
+.users ul li.user-inactive,
+.games ul li.game-inactive {
+  background-color: var(--red-1);
+  color: var(--ligth);
+}
+
+.users ul li img {
+  width: 60px;
+  border-radius: 50%;
+  border: 2px solid var(--warning-light);
+}
+
+.games ul li img:not(.star) {
+  width: 100px;
+  border-radius: 10px;
+  border: 2px solid var(--warning-light);
+}
+
+.games ul li img.star {
+  width: 20px;
+}

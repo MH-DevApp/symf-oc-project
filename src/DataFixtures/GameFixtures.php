@@ -3,7 +3,7 @@
 namespace App\DataFixtures;
 
 use App\DataFixtures\MockData\MockDataGame;
-use App\DataFixtures\Utils\FileService;
+use App\DataFixtures\Utils\FileUtils;
 use App\Entity\Game;
 use App\Entity\Picture;
 use App\Entity\Platform;
@@ -46,7 +46,7 @@ class GameFixtures extends Fixture implements DependentFixtureInterface
 
             // Picture
             for ($i=0; $i<$gameData['nbPictures']; $i++) {
-              $path = FileService::moveFileToDir(
+              $path = FileUtils::moveFileToDir(
                 'images/games',
                 $gameData['name'].'/img'.$i.'.png'
               );
