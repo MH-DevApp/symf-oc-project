@@ -40,7 +40,6 @@ class HomeController extends AbstractController
     $maxPage = $totalGame > 0 && floor($totalGame/$limit) > 0 ? floor($totalGame/$limit) + 1 : 1;
     $offset = $currentPage < $maxPage ? ($currentPage-1)*$limit : ($maxPage-1)*$limit;
 
-    dump($totalGame, $maxPage, $offset, $limit, $totalGame/$limit,floor($totalGame/$limit));
 
     /** @var Collection<Game> $games */
     $games = $gameRepository->getGamesByName(

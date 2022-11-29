@@ -15,6 +15,21 @@ services:
     ports:
       - "3001:3306"
 
+  php:
+    build:
+      context: .
+      dockerfile: Docker/php/Dockerfile.php
+    volumes:
+      - type: volume
+        source: tls
+        target: /root/.symfony/certs
+      - type: bind
+        source: ./app
+        target: /app
+      - type: volume
+        target: /app/vendor
+
 volumes:
   oc_dev:
     external: true
+  tls:
