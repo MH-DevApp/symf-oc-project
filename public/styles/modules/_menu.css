@@ -53,3 +53,8 @@ div.panel .panel-right {
   flex: 1 1 auto;
   border-left: 2px solid var(--primary);
 }
+
+div.panel .panel-right div.table {
+  display: flex;
+  flex-direction: column;
+}
