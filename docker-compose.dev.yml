@@ -28,6 +28,8 @@ services:
         target: /app
       - type: volume
         target: /app/vendor
+    ports:
+      - "3000:8000"
 
 volumes:
   oc_dev:
