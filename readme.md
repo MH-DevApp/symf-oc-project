@@ -24,6 +24,8 @@ J'ai également ajouté des fixtures pour créer 100 utilisateurs (**admin@test.
 une dizaine de jeux en 5 exemplaires et des avis random. Les données ne sont pas en lorem ipsum, j'ai récupéré la majorité
 d'entre-elles sur steam et wikipedia. Pour les avis, j'ai créé une liste avec des avis négatifs et positifs.
 
+Vous pouvez tester le projet à l'adresse suivante : https://www.mehdi-haddou.fr
+
 ## Installation
 
 ### Fichier d'environnement pour l'application Symfony :
@@ -32,7 +34,7 @@ Créer un fichier ".env" à la racine du dossier "app". Copier et coller à l'in
 APP_ENV=dev
 APP_SECRET=cba8a257d4a315256b938fe8b88c47d3
 MESSENGER_TRANSPORT_DSN=doctrine://default?auto_setup=0
-# A Modifier en fonction de votre configuration de votre machine local
+# A Modifier en fonction de votre configuration de votre machine local si vous n'utilisez pas Docker
 DATABASE_URL="mysql://root:password@db/db_dev?serverVersion=8&charset=utf8mb4"
 ```
 
