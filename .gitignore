@@ -2,3 +2,4 @@ Docker/db
 Docker/fpm
 Docker/nginx
 docker-compose.prod.yml
+.idea
