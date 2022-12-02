@@ -90,7 +90,6 @@ class ProfilController extends AbstractController
       $options['formAvatar'] = $formAvatar->createView();
     } else if ($page === 'ratings') {
       $options['ratings'] = $user->getComments();
-      dump($options['ratings']);
     }
 
     return $this->render('profil/index.html.twig', $options);

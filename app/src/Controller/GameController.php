@@ -101,7 +101,6 @@ class GameController extends AbstractController
           // ADD SELECTED PLATFORM(S)
           /** @var array<Platform> $platformsSelected */
           $platformsSelected = $platformRepository->findByIds($formEditGame->get('platformsSelected')->getData());
-          dump($platformsSelected);
 
           if (count($platformsSelected)) {
             foreach ($platformsSelected as $platform) {
@@ -265,7 +264,6 @@ class GameController extends AbstractController
       return throw new BadRequestHttpException('Une erreur s\'est produite, veuillez réessayer plus tard.');
     }
     $game->setIsPublished($publish);
-    dump($game);
     $em->persist($game);
     $em->flush();
 
