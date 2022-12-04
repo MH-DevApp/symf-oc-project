@@ -35,6 +35,13 @@
   left: 20px;
 }
 
+.games .games-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
 .games ul:hover {
   background-color: var(--primary);
   color: var(--ligth);

@@ -31,8 +31,8 @@ class RatingFixtures extends Fixture implements DependentFixtureInterface
         for ($i=0; $i < $nbComment; $i++) {
           $user = $usersDatas[rand(0, (count($usersDatas)-1))];
           while(count(array_filter($game->getComments()->toArray(), function($c) use ($user) {
-            return $c->getUser()->getPseudo() === $user->getPseudo() || $user->getPseudo() === 'Admin';
-          })) > 0) {
+            return $c->getUser()->getPseudo() === $user->getPseudo();
+          })) > 0 || $user->getPseudo() === 'Admin') {
             $user = $usersDatas[rand(0, count($usersDatas)-1)];
           }
           $score = rand(1, 5);

@@ -1,6 +1,6 @@
 // Go to view game
 /** @type {NodeListOf<HTMLDivElement>} */
-const games = document.querySelectorAll('div.games');
+const games = document.querySelectorAll('div.games-container');
 
 if (games && games.length) {
   games.forEach((game) => {

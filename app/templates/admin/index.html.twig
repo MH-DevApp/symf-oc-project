@@ -70,6 +70,7 @@
           </span>
           {% if games|length %}
             {% for game in games %}
+              <div class="games-container">
                 <ul data-target>
                   <li>
                     {% if game.pictures|length %}
@@ -104,6 +105,7 @@
                   </li>
                 </ul>
                 <a data-view-game class="hidden" href="{{ path('app_game_view', {name: game.name}) }}"></a>
+              </div>
             {% endfor %}
           {% endif %}
         </div>
