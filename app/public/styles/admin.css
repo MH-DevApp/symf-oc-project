@@ -1,10 +1,13 @@
 .users,
 .games {
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   width: 100%;
   margin-bottom: 10px;
   padding: 0 20px;
+  row-gap: 10px;
 }
 
 .users ul,
@@ -19,6 +22,17 @@
   background-color: var(--primary-light);
   align-items: center;
   border-radius: 5px;
+}
+
+.games {
+  padding-top: 40px;
+  position: relative;
+}
+
+.games span.add-game {
+  position: absolute;
+  top: 0;
+  left: 20px;
 }
 
 .games ul:hover {

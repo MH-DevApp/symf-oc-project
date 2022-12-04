@@ -63,45 +63,50 @@
             </ul>
           </div>
         {% endfor %}
-      {% elseif games is defined and games|length %}
-        {% for game in games %}
-          <div class="games">
-            <ul data-target>
-              <li>
-                {% if game.pictures|length %}
-                  <img src="{{ asset(game.pictures[0].path) }}" alt="first picture of game {{ game.name }}" />
-                {% else %}
-                  <img src="{{ asset('images/ui/img-not-found.png') }}" alt="first picture not found to {{ game.name }}" />
-                {% endif %}
-              </li>
-              <li class="flex-fill">{{ game.name }}</li>
-              <li>
-                <span>Ajouté par</span>
-                <span>{{ game.author.pseudo }}</span>
-              </li>
-              <li>
-                <span>Ajouté le</span>
-                <span>{{ game.createdAt|date('d/m/Y') }}</span>
-              </li>
-              <li>
-                <span>Score ({{ game.comments.count }})</span>
-                <span>
-                  {% for i in range(1, 5) %}
-                    {% if i <= game.score %}
-                      <img class="star" src="{{ asset('images/ui/star_full.png') }}" alt="star fully {{ i }}" />
+      {% elseif games is defined %}
+        <div class="games">
+          <span class="add-game">
+            <a href="{{ path('app_game_new') }}" class="btn btn-primary">Ajouter un jeu</a>
+          </span>
+          {% if games|length %}
+            {% for game in games %}
+                <ul data-target>
+                  <li>
+                    {% if game.pictures|length %}
+                      <img src="{{ asset(game.pictures[0].path) }}" alt="first picture of game {{ game.name }}" />
                     {% else %}
-                      <img class="star" src="{{ asset('images/ui/star_empty.png') }}" alt="star empty {{ i }}" />
+                      <img src="{{ asset('images/ui/img-not-found.png') }}" alt="first picture not found to {{ game.name }}" />
                     {% endif %}
-                  {% endfor %}
-                </span>
-              </li>
-              <li class="{{ game.isPublished ? 'game-active' : 'game-inactive' }}">
-                {{ game.isPublished ? 'Publié' : 'Non publié' }}
-              </li>
-            </ul>
-            <a data-view-game class="hidden" href="{{ path('app_game_view', {name: game.name}) }}"></a>
-          </div>
-        {% endfor %}
+                  </li>
+                  <li class="flex-fill">{{ game.name }}</li>
+                  <li>
+                    <span>Ajouté par</span>
+                    <span>{{ game.author.pseudo }}</span>
+                  </li>
+                  <li>
+                    <span>Ajouté le</span>
+                    <span>{{ game.createdAt|date('d/m/Y') }}</span>
+                  </li>
+                  <li>
+                    <span>Score ({{ game.comments.count }})</span>
+                    <span>
+                      {% for i in range(1, 5) %}
+                        {% if i <= game.score %}
+                          <img class="star" src="{{ asset('images/ui/star_full.png') }}" alt="star fully {{ i }}" />
+                        {% else %}
+                          <img class="star" src="{{ asset('images/ui/star_empty.png') }}" alt="star empty {{ i }}" />
+                        {% endif %}
+                      {% endfor %}
+                    </span>
+                  </li>
+                  <li class="{{ game.isPublished ? 'game-active' : 'game-inactive' }}">
+                    {{ game.isPublished ? 'Publié' : 'Non publié' }}
+                  </li>
+                </ul>
+                <a data-view-game class="hidden" href="{{ path('app_game_view', {name: game.name}) }}"></a>
+            {% endfor %}
+          {% endif %}
+        </div>
       {% endif %}
     </div>
   </div>
